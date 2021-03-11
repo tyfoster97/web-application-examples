@@ -1,0 +1,1 @@
+zip tafoste4_lab1.zip tafoste4_lab1/lab1act1.html tafoste4_lab1/lab1act2partA.js tafoste4_lab1/lab1act2partB.js  tafoste4_lab1/lab1act2partC.js
