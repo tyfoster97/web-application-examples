@@ -20,16 +20,22 @@ class Calc {
      * @return {number} the calculated value
      */
     this.calc = function (str) {
-      let obj = JSON.parse(str); //parse object
-
-      if (obj.op == 'add') {
-        this.ans += obj.number; //if add, then add number
-      } else if (obj.op == 'subtract') {
-        this.ans -= obj.number; //elif sub, then sub number
-      } //else do nothing
-
-      return this.ans;
+      return this.calcJSON(JSON.parse(str)); 
     };
+
+    this.calcJSON = (obj) => {
+      /* if object has an op and number property */
+      if (obj.op && obj.number) {
+        /* check if add or subtract and execute as needed */
+        if (obj.op == 'add') {
+          this.ans += obj.number;
+        } else if (obj.op == 'subtract') {
+          this.ans -= obj.number;
+        } // ELSE do nothing
+      } // ELSE do nothing
+      
+      return this.ans;
+    } // END calcJSON
   }
 
 };
@@ -45,10 +51,13 @@ function exec(arr) {
   let c = new Calc();
   /* for each object */
   arr.forEach((value, index, array) => {
-    /* get the value for the op */
-    let ans = c.calc(JSON.stringify(value.exp));
-    /* output the calculated value compared to the expected */
-    console.log(ans + ' = ' + value.expected);
+    /* if the value has exp and expected as properties */
+    if (value.exp && value.expected != null) {
+      /* get the value for the op */
+      let ans = c.calcJSON(value.exp);
+      /* output the calculated value compared to the expected */
+      console.log(ans + ' = ' + value.expected);
+    }
   });
 };
 
