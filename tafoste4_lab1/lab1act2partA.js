@@ -23,6 +23,13 @@ class Calc {
       return this.calcJSON(JSON.parse(str)); 
     };
 
+    /**
+     * Takes a JSON object and performs an add 
+     * or subtract opteration.
+     * 
+     * @param {Object} obj 
+     * @returns {number} the calculated value
+     */
     this.calcJSON = (obj) => {
       /* if object has an op and number property */
       if (obj.op && obj.number) {

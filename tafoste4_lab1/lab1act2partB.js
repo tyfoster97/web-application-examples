@@ -18,15 +18,18 @@ class Calc {
      * @param {string} str JSON string of an operation to calulate
      * @return {number} the calculated value
      */
-    Calc.prototype.calc = (str) => {
+    this.calc = (str) => {
       return this.calcJSON(JSON.parse(str));
     };
 
     /**
+     * Takes a JSON object and performs an add 
+     * or subtract opteration.
      * 
      * @param {Object} obj 
+     * @returns {number} the calculated value
      */
-    Calc.prototype.calcJSON = (obj) => {
+    this.calcJSON = (obj) => {
       /* if obj has op and expr */
       if (obj.op && obj.expr) {
         /* get the value from b */
