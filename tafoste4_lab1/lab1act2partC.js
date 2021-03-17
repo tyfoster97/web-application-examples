@@ -1,3 +1,4 @@
+const { operation } = require('./util');
 /**
  * @author Ty Foster
  * @version 2021.03.15
@@ -7,7 +8,15 @@
  */
 
 class Calc {
-  //TODO
+  constructor() {
+    this.ans = [];
+
+    this.calc = (str) => {
+
+    };
+
+
+  }
 };
 
 function exec(arr) {

@@ -1,3 +1,4 @@
+const { operation } = require('./util');
 /**
  * @author Ty Foster
  * @version 2021.03.15
@@ -33,12 +34,8 @@ class Calc {
     this.calcJSON = (obj) => {
       /* if object has an op and number property */
       if (obj.op && obj.number) {
-        /* check if add or subtract and execute as needed */
-        if (obj.op == 'add') {
-          this.ans += obj.number;
-        } else if (obj.op == 'subtract') {
-          this.ans -= obj.number;
-        } // ELSE do nothing
+        /* perform operation */
+        this.ans = operation(obj.op, this.ans, obj.number);
       } // ELSE do nothing
       
       return this.ans;
