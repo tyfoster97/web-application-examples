@@ -1,4 +1,4 @@
-const { operation } = require('./util');
+const { doMath } = require('./util');
 /**
  * @author Ty Foster
  * @version 2021.03.15
@@ -40,7 +40,7 @@ const calcJSON = (obj, ans) => {
   /* if object has an op and number property */
   if (obj.op && obj.number) {
     /* perform operation */
-    a = operation(obj.op, ans, obj.number);
+    a = doMath(obj.op, ans, obj.number);
   } // ELSE do nothing
 
   return a;

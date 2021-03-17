@@ -38,11 +38,11 @@ const calcJSON = (obj, calc) => {
     /* get the value from b */
     let b = calcJSON(obj.expr, calc);
     /* determine the answer */
-    calc.ans = operation(obj.op, calc.ans, b);
+    calc.ans = doMath(obj.op, calc.ans, b);
     /* else if obj has op and number */
   } else if (obj.op && obj.number != null) {
     /* determine the answer */
-    calc.ans = operation(obj.op, calc.ans, obj.number);
+    calc.ans = doMath(obj.op, calc.ans, obj.number);
   } // ELSE do nothing
 
   return calc.ans;

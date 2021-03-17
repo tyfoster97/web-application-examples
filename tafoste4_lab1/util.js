@@ -5,7 +5,7 @@
  * @param {number} b number from calculation object
  * @returns {number} result of operation
  */
-function operation(op, a, b) {
+function doMath(op, a, b) {
   switch(op) {
     case 'add':
       return a + b;
