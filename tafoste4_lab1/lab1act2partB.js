@@ -20,33 +20,33 @@ class Calc {
      * @return {number} the calculated value
      */
     this.calc = (str) => {
-      return this.calcJSON(JSON.parse(str));
+      return calcJSON(JSON.parse(str), this);
     };
+  }
+}
 
-    /**
+/**
      * Takes a JSON object and performs an add 
      * or subtract opteration.
      * 
      * @param {Object} obj 
      * @returns {number} the calculated value
      */
-    this.calcJSON = (obj) => {
-      /* if obj has op and expr */
-      if (obj.op && obj.expr) {
-        /* get the value from b */
-        let b = this.calcJSON(obj.expr);
-        /* determine the answer */
-        this.ans = operation(obj.op, this.ans, b);
-      /* else if obj has op and number */
-      } else if (obj.op && obj.number != null) {
-        /* determine the answer */
-        this.ans = operation(obj.op, this.ans, obj.number);
-      } // ELSE do nothing
+const calcJSON = (obj, calc) => {
+  /* if obj has op and expr */
+  if (obj.op && obj.expr) {
+    /* get the value from b */
+    let b = calcJSON(obj.expr, calc);
+    /* determine the answer */
+    calc.ans = operation(obj.op, calc.ans, b);
+    /* else if obj has op and number */
+  } else if (obj.op && obj.number != null) {
+    /* determine the answer */
+    calc.ans = operation(obj.op, calc.ans, obj.number);
+  } // ELSE do nothing
 
-      return this.ans;
-    };
-  }
-}
+  return calc.ans;
+};
 
 /***
  * Takes a JSON Object Array and performs add 
@@ -62,7 +62,7 @@ function exec(arr) {
     /* if the value has exp and expected as properties */
     if (value.exp && value.expected != null) {
       /* get the value for the op */
-      let ans = c.calcJSON(value.exp);
+      let ans = calcJSON(value.exp, c);
       /* output the calculated value compared to the expected */
       console.log(ans + ' = ' + value.expected);
     }

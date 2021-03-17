@@ -6,11 +6,12 @@
  * @returns {number} result of operation
  */
 function operation(op, a, b) {
-  if (op == 'add') {
-    return a + b;
-  } else if (op == 'subtract') {
-    return a - b;
-  } // ELSE do nothing with b
+  switch(op) {
+    case 'add':
+      return a + b;
+    case 'subtract':
+      return a - b;
+  }
 
   return a;
 };

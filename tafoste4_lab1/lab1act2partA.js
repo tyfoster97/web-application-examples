@@ -21,28 +21,30 @@ class Calc {
      * @return {number} the calculated value
      */
     this.calc = function (str) {
-      return this.calcJSON(JSON.parse(str)); 
-    };
-
-    /**
-     * Takes a JSON object and performs an add 
-     * or subtract opteration.
-     * 
-     * @param {Object} obj 
-     * @returns {number} the calculated value
-     */
-    this.calcJSON = (obj) => {
-      /* if object has an op and number property */
-      if (obj.op && obj.number) {
-        /* perform operation */
-        this.ans = operation(obj.op, this.ans, obj.number);
-      } // ELSE do nothing
-      
+      this.ans =  calcJSON(JSON.parse(str), this.ans);
       return this.ans;
-    } // END calcJSON
+    };
   }
 
 };
+
+/**
+ * Takes a JSON object and performs an add 
+ * or subtract opteration.
+ * 
+ * @param {Object} obj 
+ * @returns {number} the calculated value
+ */
+const calcJSON = (obj, ans) => {
+  let a = ans;
+  /* if object has an op and number property */
+  if (obj.op && obj.number) {
+    /* perform operation */
+    a = operation(obj.op, ans, obj.number);
+  } // ELSE do nothing
+
+  return a;
+} // END calcJSON
 
 /***
  * Takes a JSON Object Array and performs add 
@@ -58,7 +60,7 @@ function exec(arr) {
     /* if the value has exp and expected as properties */
     if (value.exp && value.expected != null) {
       /* get the value for the op */
-      let ans = c.calcJSON(value.exp);
+      let ans = calcJSON(value.exp, c.ans);
       /* output the calculated value compared to the expected */
       console.log(ans + ' = ' + value.expected);
     }
