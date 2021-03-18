@@ -21,30 +21,17 @@ class Calc {
      * @return {number} the calculated value
      */
     this.calc = function (str) {
-      this.ans =  calcJSON(JSON.parse(str), this.ans);
+      let obj = JSON.parse(str); // get object
+
+      /* if valid props -> do math */
+      if (obj.op && obj.number) {
+        this.ans = doMath(this.ans, obj.op, obj.number);
+      }
       return this.ans;
     };
   }
 
 };
-
-/**
- * Takes a JSON object and performs an add 
- * or subtract opteration.
- * 
- * @param {Object} obj 
- * @returns {number} the calculated value
- */
-const calcJSON = (obj, ans) => {
-  let a = ans;
-  /* if object has an op and number property */
-  if (obj.op && obj.number) {
-    /* perform operation */
-    a = doMath(obj.op, ans, obj.number);
-  } // ELSE do nothing
-
-  return a;
-} // END calcJSON
 
 /***
  * Takes a JSON Object Array and performs add 
@@ -56,13 +43,10 @@ const calcJSON = (obj, ans) => {
 function exec(arr) {
   let c = new Calc();
   /* for each object */
-  arr.forEach((value, index, array) => {
-    /* if the value has exp and expected as properties */
-    if (value.exp && value.expected != null) {
-      /* get the value for the op */
-      let ans = calcJSON(value.exp, c.ans);
-      /* output the calculated value compared to the expected */
-      console.log(ans + ' = ' + value.expected);
+  arr.forEach(obj => {
+    if (obj.exp && obj.expected != null && obj.exp.op && obj.exp.number) {
+      c.ans = doMath(c.ans, obj.exp.op, obj.exp.number);
+      console.log(c.ans + ' = ' + obj.expected);
     }
   });
 };

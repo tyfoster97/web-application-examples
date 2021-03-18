@@ -1,4 +1,4 @@
-const { operation } = require('./util');
+const { doOp } = require('./util');
 /**
  * @author Ty Foster
  * @version 2021.03.15
@@ -7,20 +7,31 @@ const { operation } = require('./util');
  * 
  */
 
-class Calc {
-  constructor() {
-    this.ans = [];
+class PreCalc {
+  constructor(num) {
+    this.calcStack = (num) ? [num] : [0];
+    this.ans = this.calcStack[0];
 
     this.calc = (str) => {
-
+      return operation(JSON.parse(str), this);
     };
-
-
   }
-};
+}
+
+function operation(obj, calc) {
+  if (obj.op) {
+    return doOp(calc, obj);
+  }
+}
 
 function exec(arr) {
-  //TODO
-};
+  let c = new PreCalc();
 
-module.exports = { Calc, exec };
+  arr.forEach((obj) => {
+    operation(obj.exp, c);
+
+    console.log(c.ans + ' = ' + obj.expected);
+  });
+}
+
+module.exports = { PreCalc, exec };

@@ -1,4 +1,4 @@
-const { operation } = require('./util');
+const { doMath, doExprB } = require('./util');
 /**
  * @author Ty Foster
  * @version 2021.03.15
@@ -20,33 +20,19 @@ class Calc {
      * @return {number} the calculated value
      */
     this.calc = (str) => {
-      return calcJSON(JSON.parse(str), this);
+      calculation(JSON.parse(str), this);
+      return this.ans;
     };
   }
 }
 
-/**
-     * Takes a JSON object and performs an add 
-     * or subtract opteration.
-     * 
-     * @param {Object} obj 
-     * @returns {number} the calculated value
-     */
-const calcJSON = (obj, calc) => {
-  /* if obj has op and expr */
-  if (obj.op && obj.expr) {
-    /* get the value from b */
-    let b = calcJSON(obj.expr, calc);
-    /* determine the answer */
-    calc.ans = doMath(obj.op, calc.ans, b);
-    /* else if obj has op and number */
-  } else if (obj.op && obj.number != null) {
-    /* determine the answer */
-    calc.ans = doMath(obj.op, calc.ans, obj.number);
-  } // ELSE do nothing
-
-  return calc.ans;
-};
+function calculation(obj, calc) {
+  if (obj.op && obj.number) {
+    calc.ans = doMath(calc.ans, obj.op, obj.number);
+  } else if (obj.op && obj.expr) {
+    calc.ans = doExprB(calc.ans, obj.op, obj.expr);
+  }
+}
 
 /***
  * Takes a JSON Object Array and performs add 
@@ -58,13 +44,13 @@ const calcJSON = (obj, calc) => {
 function exec(arr) {
   let c = new Calc();
   /* for each object */
-  arr.forEach((value, index, array) => {
+  arr.forEach(obj => {
     /* if the value has exp and expected as properties */
-    if (value.exp && value.expected != null) {
+    if (obj.exp && obj.expected != null) {
       /* get the value for the op */
-      let ans = calcJSON(value.exp, c);
+      calculation(obj.exp, c);
       /* output the calculated value compared to the expected */
-      console.log(ans + ' = ' + value.expected);
+      console.log(c.ans + ' = ' + obj.expected);
     }
   });
 };

@@ -1,1 +1,1 @@
-zip ../tafoste4_lab1.zip lab1act1.html lab1act2partA.js lab1act2partB.js lab1act2partC.js lab1act2partA_test.js lab1act2partB_test.js lab1act2partC_test.js
+zip ../tafoste4_lab1.zip lab1act1.html lab1act2partA.js lab1act2partB.js lab1act2partC.js lab1act2partA_test.js lab1act2partB_test.js lab1act2partC_test.js util.js README.txt
