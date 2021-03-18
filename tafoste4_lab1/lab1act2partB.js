@@ -1,4 +1,4 @@
-const { doMath, doExprB } = require('./util');
+const { doMath, doExpr } = require('./util');
 /**
  * @author Ty Foster
  * @version 2021.03.15
@@ -30,7 +30,7 @@ function calculation(obj, calc) {
   if (obj.op && obj.number) {
     calc.ans = doMath(calc.ans, obj.op, obj.number);
   } else if (obj.op && obj.expr) {
-    calc.ans = doExprB(calc.ans, obj.op, obj.expr);
+    calc.ans = doExpr(calc.ans, obj.op, obj.expr);
   }
 }
 
