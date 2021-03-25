@@ -1,5 +1,4 @@
 const fs = require('fs');
-const buffer = require('buffer');
 const util = require('./util');
 const qStore = './QA.json'; // improves refactorability
 /**
