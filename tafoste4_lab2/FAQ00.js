@@ -6,7 +6,7 @@ const qStore = './QA.json'; // improves refactorability
  * @version 2021.03.25
  * SER 421, Arizona State University
  * Copyright 2021, all rights reserved.
- * 
+ *
  * CONTRAINTS
  * 1. Prevent concurrent read/write problems
  * 2. Q&A has question, answer, tags, author, date, and id
