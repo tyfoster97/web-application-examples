@@ -6,10 +6,10 @@ const TYPE_MISMATCH = 103;
 
 
 /* FILE PATHS */
-const QSTORE = __dirname + 'QA.json';
-const USERSTORE = __dirname + 'data/Users.json';
-const LOGINFORM_A = __dirname + 'forms/loginformA.html';
-const LOGINFORM_B = __dirname + 'forms/loginformB.html';
+const QSTORE = __dirname + '/QA.json';
+const USERSTORE = __dirname + '/data/Users.json';
+const LOGINFORM_A = __dirname + '/forms/loginformA.html';
+const LOGINFORM_B = __dirname + '/forms/loginformB.html';
 
 module.exports = { 
   LOGIN_SUCCESSFUL, USER_NOT_FOUND, PASSWORD_MISMATCH, TYPE_MISMATCH,
