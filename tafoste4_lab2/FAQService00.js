@@ -1,7 +1,8 @@
 const http = require('http');
 const qstring = require('querystring');
 const { LOGIN_SUCCESSFUL, USER_NOT_FOUND, PASSWORD_MISMATCH, TYPE_MISMATCH } = require('./constants');
-const { mapCookies, buildLoginForm, login } = require('./util/server');
+const { mapCookies, buildLoginForm, buildHeader, login, buildLoginHeader, buildFooter, checkID } = require('./util/server');
+const { hashCode, varCheck } = require('./util/util');
 /* for simplicity */
 const pgFoot = '</html></body>';
 /**
@@ -12,65 +13,132 @@ const pgFoot = '</html></body>';
  *
  */
 
-const loginA = 
-
 http.createServer(function (req, res) {
-  // get cookies from header
-  let cookies = req.headers.cookie.split(/;\s+/);
-  let cookieMap = mapCookies(cookies);
-  if (req.method == 'GET') {
-    res.writeHead(200);
-    let resBody = '';
-    // TODO display welcome message if uname cookie is detected -> use helper method to build into resBody
-    if (cookieMap.has('login') && cookieMap.get('login') == 'true') {
-      // TODO display Q&A page
-      resBody += 'hello';
+  // check for cookies, make cookieMap
+  let cookieMap = (varCheck(req.headers.cookie))
+    ? mapCookies(req.headers.cookie.split(/;\s+/))
+    : new Map();
+  if (!checkID(cookieMap.get('id'))) {
+    if (req.method == 'POST') {
+      // get request data
+      let loginData = '';
+      req.on('data', (chunk) => {
+        loginData += chunk;
+      });
+      req.on('end', () => {
+        loginResponse(res, loginData)
+      });
     } else {
-      if (cookieMap.has('uname')) {
-        // TODO generate page header with welcome message
-        resBody += buildLoginForm(cookieMap.get('uname'));
-      } else {
-        resBody += buildLoginForm('');
-      }
+      res.writeHead(200);
+      res.end(loginPage(cookieMap.get('uname'), cookieMap.get('utype'), null));
     }
-    res.end(resBody + pgFoot);
-  } else if (req.method == 'POST') {
-    // read in request
-    let reqData = '';
-    req.on('data', (chunk) => {
-      reqData += chunk;
-    });
-    req.on('end', () => {
-      let params = qstring.parse(reqData);
-      // TODO determine page calling POST
-      if (params.username && params.password) {
-        // TODO verify login
-        switch(login(params.username, params.password, params.usertype)) {
-          case LOGIN_SUCCESSFUL:
-            // TODO handle successful login
-            res.writeHead(200, [
-              ['Set-Cookie', 'uname=' + params.username],
-              ['Set-Cookie', 'login=true'],
-              ['Set-Cookie', 'utype=' + params.usertype]
-            ]);
-            res.end(util.pgHead(params.username, params.usertype, false) + 'logged in' + pgFoot);
-            break;
-          case USER_NOT_FOUND:
-            // TODO
-            res.setHeader(401);
-            break;
-          case PASSWORD_MISMATCH:
-            // TODO
-            break;
-          case TYPE_MISMATCH:
-            // TODO
-            break;
-          default:
-            res.setHeader(500); // Something has to go very wrong for this to happen
-            break;
-        }
-        // TODO send response
-      } // TODO handle other pages
-    });
+  } else {
+    // handle logged in user
+    if (req.method == 'POST') {
+      // handle POST
+      let reqData = '';
+      req.on('data', (chunk) => {
+        reqData += chunk;
+      });
+      req.on('end', () => {
+        let params = qstring.parse(reqData);
+        if (varCheck(params.logout)) {
+          //handle logout
+          logoutResponse(res, cookieMap);
+        } 
+        //TODO handle database search
+        //TODO handle database edit
+      });
+    } else {
+      //TODO handle GET
+    }
   }
 }).listen(3000);
+
+/**
+ * Makes the HTML string representation of the login screen
+ * dynamically
+ * 
+ * @param {string} uname the username of the user
+ * @param {string} utype the type of user
+ * @param {number} status login status code from constants
+ * @returns {string} HTML represenation of login screen
+ */
+function loginPage(uname, utype, status) {
+  let resMsg = buildLoginHeader(null, uname, utype, status);
+  resMsg += (varCheck(uname))
+    ? buildLoginForm(uname)
+    : buildLoginForm('');
+  return resMsg += buildFooter(false);
+}
+
+/**
+ * Handles generating the login response after the POST method
+ * is called by the login form
+ * 
+ * @info SENDS RESPONSE BACK TO INCOMING CONNECTION
+ * @param {ServerMessage} res ServerMessage to send back to incoming connection
+ * @param {string} data query string from an `IncomingMessage` Object, parsed for params
+ */
+function loginResponse(res, data) {
+  let params = qstring.parse(data);
+  // check params
+  let status = 0;
+  console.log(params);
+  if (varCheck(params.username)) {
+    if (varCheck(params.password)) {
+      if (varCheck(params.usertype)) {
+        status = login(
+          params.username,
+          params.password,
+          params.usertype
+        ); // only executes if all params are present
+      } else {
+        status = TYPE_MISMATCH;
+      }
+    } else {
+      status = PASSWORD_MISMATCH;
+    }
+  } else {
+    status = USER_NOT_FOUND;
+  }
+  // write response
+  if (status == LOGIN_SUCCESSFUL) {
+    res.writeHead(200, [
+      ['Set-Cookie', 'uname=' + params.username],
+      ['Set-Cookie', 'name=t'],
+      ['Set-Cookie', 'utype=' + params.usertype],
+      ['Set-Cookie', 'id=' + hashCode(params.password)]
+    ]);
+    res.end(
+      buildHeader(params.username, params.usertype) +
+      '' + // TODO view Q&A page
+      buildFooter(true)
+    );
+  } else {
+    res.writeHead(401);
+    res.end(loginPage(params.username, params.usertype, status));
+  }
+}
+
+/**
+ * Handles generating the logout response after the POST method
+ * is called by the logout form
+ * 
+ * @info SENDS RESPONSE BACK TO INCOMING CONNECTION
+ * @param {ServerMessage} res `ServerMessage` to send back to incoming connection
+ * @param {Map<string, string>} cookieMap `Map` of cookies provided by the `IncomingMessage`
+ */
+function logoutResponse(res, cookieMap) {
+  let header = buildLoginHeader(
+    (cookieMap.get('name') == 't'),
+    cookieMap.get('uname'),
+    cookieMap.get('utype'),
+    null
+  );
+  res.writeHead(200, [
+    ['Set-Cookie', 'name=f'],
+    ['Set-Cookie', 'id=0']
+  ]);
+  res.end(header + buildLoginForm(cookieMap.get('uname')) + buildFooter(false));
+}

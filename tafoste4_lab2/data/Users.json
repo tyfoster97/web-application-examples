@@ -1,12 +1,14 @@
 [
   {
-    "username": "student",
+    "username": "stu",
     "password": "password",
-    "type": "student"
+    "type": "student",
+    "id": 1216985755
   },
   {
-    "username": "instructor",
+    "username": "drprof",
     "password": "pass",
-    "type": "instructor"
+    "type": "instructor",
+    "id": 3433489
   }
 ]
