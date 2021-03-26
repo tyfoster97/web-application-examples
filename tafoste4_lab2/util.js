@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { USER_NOT_FOUND, PASSWORD_MISMATCH, LOGIN_SUCCESSFUL, TYPE_MISMATCH, LOGINFORM_A, LOGINFORM_B, USERSTORE } = require('./constants');
 const indent = 2; // no magic numbers
 /**
  * @author Ty Foster
@@ -126,4 +127,51 @@ const betweenDates = (date, start, end) => {
   return false;
 }
 
-module.exports = { varCheck, genID, getJSONArr, writeJSONArr, getIdx, tagMatch, betweenDates };
+/**
+ * Logs in a user if login info matches
+ * 
+ * @param {string} uname the username to compare against
+ * @param {string} pwd the password to compare against
+ * @param {string} type the type of user
+ * @returns {number} status code of the login (see constants.js for specific codes)
+ */
+const login = (uname, pwd, type) => {
+  let users = getJSONArr(USERSTORE);
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].username == uname) {
+      if (users[i].password == pwd) {
+        if (users[i].type == type) {
+          return LOGIN_SUCCESSFUL;
+        }
+        return TYPE_MISMATCH;
+      }
+      return PASSWORD_MISMATCH;
+    }
+  }
+  return USER_NOT_FOUND;
+}
+
+const mapCookies = (cookies) => {
+  let cookieMap = new Map();
+  cookies.forEach(cookie => {
+    cookie = cookie.split('=');
+    cookieMap.set(cookie[0], cookie[1]);
+  });
+  return cookieMap;
+}
+
+/**
+ * 
+ * @param {*} uname 
+ * @returns 
+ */
+const buildLoginForm = (uname) => {
+  let form = fs.readFileSync(LOGINFORM_A); // first part of form
+  form += '<input type="text" name="username" value="' + uname + '"/></br>'; // set username
+  form += fs.readFileSync(LOGINFORM_B); // second part of form
+  return form;
+}
+
+module.exports = { 
+  varCheck, genID, getJSONArr, writeJSONArr, getIdx, tagMatch, betweenDates, 
+  login, mapCookies, buildLoginForm };
