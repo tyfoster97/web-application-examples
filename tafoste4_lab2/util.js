@@ -151,6 +151,13 @@ const login = (uname, pwd, type) => {
   return USER_NOT_FOUND;
 }
 
+/**
+ * Takes an Array of cookie strings and converts them to a 
+ * Map of cookie keys and values
+ * 
+ * @param {Array<string>} cookies an Array of `key` and `value` pairs delimited by `=`
+ * @returns {Map<string, string>} representing cookie `key` and `value` pairs
+ */
 const mapCookies = (cookies) => {
   let cookieMap = new Map();
   cookies.forEach(cookie => {
@@ -161,9 +168,10 @@ const mapCookies = (cookies) => {
 }
 
 /**
+ * Builds the login page based on the username provided
  * 
- * @param {*} uname 
- * @returns 
+ * @param {string} uname the username to add as a value to the Login form
+ * @returns {string} well-formed HTML string representing a login page
  */
 const buildLoginForm = (uname) => {
   let form = fs.readFileSync(LOGINFORM_A); // first part of form
