@@ -32,29 +32,27 @@ const genID = () => {
 }
 
 /**
- * Reads in the Q&A array stored in the data store and returns an array
- * of the Q&A objects
+ * Reads in the JSON Array stored in the file and returns an Array
+ * of the Objects
  * 
  * @warn DOES NOT LOCK FILE
- * @param {string} path the path to the file which stores the Q&A JSON array 
- * @return {Array<Object>} an array of Q&A objects with properties `question`,
- * `answer`, `author`, `tags`, `date`, and `id`
+ * @param {string} path the path to the file which stores the JSON array 
+ * @return {Array<Object>} an array of objects
  */
-const getQArr = (path) => {
+const getJSONArr = (path) => {
   let data = fs.readFileSync(path);
   return JSON.parse(data);
 }
 
 /**
- * Writes `qArr` to specified file located at `path`
+ * Writes `arr` to specified file located at `path`
  * 
  * @warn DOES NOT UNLOCK FILE
- * @param {string} path path from current directory to the Q&A store
- * @param {Array<Object>} qArr array of question objects with properties
- * `question`, `answer`, `author`, `date`, `tags`, and `id`
+ * @param {string} path path to the file
+ * @param {Array<Object>} arr array of objects
  */
-const writeQArr = (path, qArr) => {
-  fs.writeFileSync(path, JSON.stringify(qArr, null, indent));
+const writeJSONArr = (path, arr) => {
+  fs.writeFileSync(path, JSON.stringify(arr, null, indent));
 }
 
 /**
@@ -128,4 +126,4 @@ const betweenDates = (date, start, end) => {
   return false;
 }
 
-module.exports = { varCheck, genID, getQArr, writeQArr, getIdx, tagMatch, betweenDates };
+module.exports = { varCheck, genID, getJSONArr, writeJSONArr, getIdx, tagMatch, betweenDates };

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const util = require('./util');
-const qStore = './QA.json'; // improves refactorability
+const qStore = __dirname + '/QA.json'; // improves refactorability
 /**
  * @author Ty Foster
  * @version 2021.03.25
@@ -41,11 +41,11 @@ class FAQ {
 
         let fd = fs.openSync(qStore, 'r+'); // lock file
 
-        let qArr = util.getQArr(qStore);
+        let qArr = util.getJSONArr(qStore);
         if (util.getIdx(qArr, null, ques) == -1) {
         // only add question if it is not in the store
           qArr.push(qObj); // adds new qArr
-          util.writeQArr(qStore, qArr);
+          util.writeJSONArr(qStore, qArr);
         }
 
         fs.closeSync(fd); // unlock file
@@ -69,12 +69,12 @@ class FAQ {
       // passed to the function
         let fd = fs.openSync(qStore, 'r+'); // lock file
 
-        let qArr = util.getQArr(qStore);
+        let qArr = util.getJSONArr(qStore);
         let i = util.getIdx(qArr, id, ques);
         if (i >= 0) {
         // checks that the question was found
           qArr[i].answer = newAns;
-          util.writeQArr(qStore, qArr); // only writes out qArr if modified
+          util.writeJSONArr(qStore, qArr); // only writes out qArr if modified
         }
 
         fs.closeSync(fd); // unlock file
@@ -99,12 +99,12 @@ class FAQ {
       // passed to the function
         let fd = fs.openSync(qStore, 'r+'); // lock file
 
-        let qArr = util.getQArr(qStore);
+        let qArr = util.getJSONArr(qStore);
         let i = util.getIdx(qArr, id, ques);
         if (i >= 0) {
         // checks that the question was found
             qArr[i].tags = tags;
-            util.writeQArr(qStore, qArr); // only writes out qArr if modified
+            util.writeJSONArr(qStore, qArr); // only writes out qArr if modified
         }
 
         fs.closeSync(fd); // unlock file
@@ -126,12 +126,12 @@ class FAQ {
       // ensures 1 of 2 needed parameters is passed to the function
         let fd = fs.openSync(qStore, 'r+'); // lock file
 
-        let qArr = util.getQArr(qStore);
+        let qArr = util.getJSONArr(qStore);
         let i = util.getIdx(qArr, id, ques);
         if (i >= 0) {
         // checks that question was found
           qArr.splice(i, 1); // remove question
-          util.writeQArr(qStore, qArr); // only writes if modified
+          util.writeJSONArr(qStore, qArr); // only writes if modified
         }
 
         fs.closeSync(fd);
@@ -152,7 +152,7 @@ class FAQ {
     this.filterQuestions = (author, tags, startDate, endDate) => {
       let fd = fs.openSync(qStore, 'r'); // lock file
       
-      let qArr = util.getQArr(qStore);
+      let qArr = util.getJSONArr(qStore);
 
       // filter by author
       if (util.varCheck(author)) {
