@@ -1,6 +1,6 @@
 const fs = require('fs');
 const util = require('./util');
-const qStore = __dirname + '/QA.json'; // improves refactorability
+const QSTORE = require('./constants') // improves refactorability
 /**
  * @author Ty Foster
  * @version 2021.03.25
@@ -39,13 +39,13 @@ class FAQ {
           id: util.genID() // ensures unique id
         }; // constructs object before adding to store
 
-        let fd = fs.openSync(qStore, 'r+'); // lock file
+        let fd = fs.openSync(QSTORE, 'r+'); // lock file
 
-        let qArr = util.getJSONArr(qStore);
+        let qArr = util.getJSONArr(QSTORE);
         if (util.getIdx(qArr, null, ques) == -1) {
         // only add question if it is not in the store
           qArr.push(qObj); // adds new qArr
-          util.writeJSONArr(qStore, qArr);
+          util.writeJSONArr(QSTORE, qArr);
         }
 
         fs.closeSync(fd); // unlock file
@@ -67,14 +67,14 @@ class FAQ {
       ) {
       // ensures that at least 2 of the necessary variables have been
       // passed to the function
-        let fd = fs.openSync(qStore, 'r+'); // lock file
+        let fd = fs.openSync(QSTORE, 'r+'); // lock file
 
-        let qArr = util.getJSONArr(qStore);
+        let qArr = util.getJSONArr(QSTORE);
         let i = util.getIdx(qArr, id, ques);
         if (i >= 0) {
         // checks that the question was found
           qArr[i].answer = newAns;
-          util.writeJSONArr(qStore, qArr); // only writes out qArr if modified
+          util.writeJSONArr(QSTORE, qArr); // only writes out qArr if modified
         }
 
         fs.closeSync(fd); // unlock file
@@ -97,14 +97,14 @@ class FAQ {
       ) {
       // ensures that at least 2 of the necessary variables have been
       // passed to the function
-        let fd = fs.openSync(qStore, 'r+'); // lock file
+        let fd = fs.openSync(QSTORE, 'r+'); // lock file
 
-        let qArr = util.getJSONArr(qStore);
+        let qArr = util.getJSONArr(QSTORE);
         let i = util.getIdx(qArr, id, ques);
         if (i >= 0) {
         // checks that the question was found
             qArr[i].tags = tags;
-            util.writeJSONArr(qStore, qArr); // only writes out qArr if modified
+            util.writeJSONArr(QSTORE, qArr); // only writes out qArr if modified
         }
 
         fs.closeSync(fd); // unlock file
@@ -124,14 +124,14 @@ class FAQ {
         || util.varCheck(ques)
       ) {
       // ensures 1 of 2 needed parameters is passed to the function
-        let fd = fs.openSync(qStore, 'r+'); // lock file
+        let fd = fs.openSync(QSTORE, 'r+'); // lock file
 
-        let qArr = util.getJSONArr(qStore);
+        let qArr = util.getJSONArr(QSTORE);
         let i = util.getIdx(qArr, id, ques);
         if (i >= 0) {
         // checks that question was found
           qArr.splice(i, 1); // remove question
-          util.writeJSONArr(qStore, qArr); // only writes if modified
+          util.writeJSONArr(QSTORE, qArr); // only writes if modified
         }
 
         fs.closeSync(fd);
@@ -150,9 +150,9 @@ class FAQ {
      * @returns {Array<Object>} the set of filtered Q&A Objects
      */
     this.filterQuestions = (author, tags, startDate, endDate) => {
-      let fd = fs.openSync(qStore, 'r'); // lock file
+      let fd = fs.openSync(QSTORE, 'r'); // lock file
       
-      let qArr = util.getJSONArr(qStore);
+      let qArr = util.getJSONArr(QSTORE);
 
       // filter by author
       if (util.varCheck(author)) {
