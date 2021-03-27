@@ -9,6 +9,22 @@ const { varCheck } = require('./util');
  */
 
 /**
+ * Determines if `qObj.author` contains a `author` found in `auths`
+ * 
+ * @param {Object} qObj the Q&A Object to check the authors of
+ * @param {Array<String>} auths an Array of authors to try and match
+ * @returns {boolean} `true` if a match is found, `false` otherwise
+ */
+const authMatch = (qObj, auths) => {
+  for (let i = 0; i < auths.length; i++) {
+    if (qObj.author.indexOf(auths[i]) >= 0) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
  * Checks if `date` is between `start` and `end`
  * 
  * @param {string} date ISO date string of the date to check
@@ -80,6 +96,7 @@ const tagMatch = (qObj, tags) => {
 };
 
 module.exports = {
+  authMatch,
   betweenDates,
   getIdx,
   tagMatch

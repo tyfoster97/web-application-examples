@@ -37,7 +37,7 @@ const varCheck = (v) => {
   return true;
 };
 
-function hashCode(str) {
+const hashCode = (str) => {
   var hash = 0;
   if (str.length == undefined || str.length == 0) {
     return hash;

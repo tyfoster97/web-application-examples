@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { QSTORE } = require('./constants'); // improves refactorability
 const { getJSONArr, writeJSONArr } = require('./util/io');
-const { getIdx, tagMatch, betweenDates } = require('./util/search');
+const { getIdx, tagMatch, betweenDates, authMatch } = require('./util/search');
 const { varCheck, genID } = require('./util/util');
 /**
  * @author Ty Foster
@@ -158,15 +158,17 @@ class FAQ {
 
       // filter by author
       if (varCheck(author)) {
+        let authArr = author.split(/,\s+/);
         qArr = qArr.filter(
-          (qObj) => qObj.author == author
+          (qObj) => authMatch(qObj, authArr)
         );
       }
 
       // filter by tags
       if (varCheck(tags)) {
         let tagArr = tags.split(/,\s+/);
-        qArr = qArr.filter((qObj) => tagMatch(qObj, tagArr)
+        qArr = qArr.filter(
+          (qObj) => tagMatch(qObj, tagArr)
         )
       }
 

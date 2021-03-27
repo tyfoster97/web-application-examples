@@ -98,6 +98,28 @@ const buildLoginHeader = (loggedOut, uname, utype, status) => {
 }
 
 /**
+ * Calculates the HTML div container which displays the information
+ * contained in a qObj object
+ * 
+ * @warn ASSUMES qObj has properties `question`, `author`, `answer`, `tags`,
+ * and `date`
+ * @param {Object} qObj QA Object to pass to the function
+ * @return {string} HTML container for a QA Object to display in the browser
+ */
+const buildQA = (qObj) => {
+  let text = '<div>'; // start container
+  text += '<h4>' + qObj.question + '</h4>'; // question text
+  text += '<p style="color: gray;">' + qObj.answer + '</p>';
+  text += '<div style="color: darkgray; padding-right: 20px;">' +
+    '<label>author: ' + qObj.author + '</label></div>'; // answer
+  text += '<div style="color: darkgray;">' +
+    '<label>tags: ' + qObj.tags + '</label></div>'; // tags
+  text += '<div style="color: darkgray; padding-left: 20px;">' +
+    '<label>date: ' + qObj.date + '</label></div>'; // date
+  return text + '</div>'; // close container
+}
+
+/**
  * Verifies that a provided `id` is known to the system
  * 
  * @param {string} id the user `id` to check against
@@ -164,6 +186,7 @@ module.exports = {
   buildHeader,
   buildLoginForm,
   buildLoginHeader,
+  buildQA,
   checkID,
   login,
   mapCookies
