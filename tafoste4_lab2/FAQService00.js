@@ -1,7 +1,7 @@
 const http = require('http');
 const qstring = require('querystring');
 const { LOGIN_SUCCESSFUL, USER_NOT_FOUND, PASSWORD_MISMATCH, TYPE_MISMATCH } = require('./constants');
-const { mapCookies, buildLoginForm, buildHeader, login, buildLoginHeader, buildFooter, checkID } = require('./util/server');
+const { mapCookies, buildLoginForm, buildHeader, ldpg, login, buildLoginHeader, buildFooter, checkID, buildQAPage } = require('./util/server');
 const { hashCode, varCheck } = require('./util/util');
 /* for simplicity */
 const pgFoot = '</html></body>';
@@ -15,9 +15,7 @@ const pgFoot = '</html></body>';
 
 http.createServer(function (req, res) {
   // check for cookies, make cookieMap
-  let cookieMap = (varCheck(req.headers.cookie))
-    ? mapCookies(req.headers.cookie.split(/;\s+/))
-    : new Map();
+  let cookieMap = (varCheck(req.headers.cookie)) ? mapCookies(req.headers.cookie.split(/;\s+/)) : new Map();
   if (!checkID(cookieMap.get('id'))) {
     if (req.method == 'POST') {
       // get request data
@@ -26,7 +24,7 @@ http.createServer(function (req, res) {
         loginData += chunk;
       });
       req.on('end', () => {
-        loginResponse(res, loginData)
+        loginResponse(res, loginData);
       });
     } else {
       res.writeHead(200);
@@ -42,15 +40,31 @@ http.createServer(function (req, res) {
       });
       req.on('end', () => {
         let params = qstring.parse(reqData);
-        if (varCheck(params.logout)) {
+        if (varCheck(params.search)){
+          buildQAPage(res, cookieMap, params.author, params.tags, params.startdate, params.enddate);
+        } 
+        else if (varCheck(params.edit)) {
+          // TODO show edit QA page
+        }
+        else if (varCheck(params.save)) {
+          // TODO modify the QA in db
+        }
+        else if (varCheck(params.cancel)) {
+          // TODO abort changes, return to search
+        }
+        else if (varCheck(params.logout)) {
           //handle logout
           logoutResponse(res, cookieMap);
-        } 
+        } else {
+
+        }
+        console.log(params);
         //TODO handle database search
         //TODO handle database edit
       });
     } else {
-      //TODO handle GET
+      res.writeHead(200);
+      buildQAPage(res, cookieMap, '', '', '', '');
     }
   }
 }).listen(3000);
@@ -66,9 +80,7 @@ http.createServer(function (req, res) {
  */
 function loginPage(uname, utype, status) {
   let resMsg = buildLoginHeader(null, uname, utype, status);
-  resMsg += (varCheck(uname))
-    ? buildLoginForm(uname)
-    : buildLoginForm('');
+  resMsg += buildLoginForm(uname || '');
   return resMsg += buildFooter(false);
 }
 
@@ -110,11 +122,10 @@ function loginResponse(res, data) {
       ['Set-Cookie', 'utype=' + params.usertype],
       ['Set-Cookie', 'id=' + hashCode(params.password)]
     ]);
-    res.end(
-      buildHeader(params.username, params.usertype) +
-      '' + // TODO view Q&A page
-      buildFooter(true)
-    );
+    let cm = new Map();
+    cm.set('uname', params.username);
+    cm.set('utype', params.usertype);
+    buildQAPage(res, cm, '', '', '', '');
   } else {
     res.writeHead(401);
     res.end(loginPage(params.username, params.usertype, status));

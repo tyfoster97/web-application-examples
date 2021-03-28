@@ -1,5 +1,6 @@
 const fs = require('fs');
-const { QSTORE } = require('./constants'); // improves refactorability
+// improves refactorability
+const { QSTORE } = require('./constants');
 const { getJSONArr, writeJSONArr } = require('./util/io');
 const { getIdx, tagMatch, betweenDates, authMatch } = require('./util/search');
 const { varCheck, genID } = require('./util/util');
@@ -158,7 +159,7 @@ class FAQ {
 
       // filter by author
       if (varCheck(author)) {
-        let authArr = author.split(/,\s+/);
+        let authArr = author.split(/,?\s+/);
         qArr = qArr.filter(
           (qObj) => authMatch(qObj, authArr)
         );
@@ -166,7 +167,7 @@ class FAQ {
 
       // filter by tags
       if (varCheck(tags)) {
-        let tagArr = tags.split(/,\s+/);
+        let tagArr = tags.split(/,?\s+/);
         qArr = qArr.filter(
           (qObj) => tagMatch(qObj, tagArr)
         )
@@ -182,6 +183,6 @@ class FAQ {
       return qArr;
     }
   }
-};
+}
 
 module.exports = { FAQ };

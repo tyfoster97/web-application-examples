@@ -1,7 +1,8 @@
 const fs = require('fs');
 const { getJSONArr } = require('./io');
 const { hashCode, varCheck } = require('./util');
-const { LOGINFORM_A, LOGINFORM_B, LOGIN_SUCCESSFUL, PASSWORD_MISMATCH, USER_NOT_FOUND, USERSTORE, TYPE_MISMATCH, LOGOUT_BUTTON, NUMSTORE, USER_ERR_MSG, PWD_ERR_MSG, TYPE_ERR_MSG } = require('../constants');
+const { LOGINFORM_A, LOGINFORM_B, LOGIN_SUCCESSFUL, PASSWORD_MISMATCH, USER_NOT_FOUND, USERSTORE, TYPE_MISMATCH, LOGOUT_BUTTON, NUMSTORE, USER_ERR_MSG, PWD_ERR_MSG, TYPE_ERR_MSG, SEARCH_BAR_STU, SEARCH_BAR_INST } = require('../constants');
+const { FAQ } = require('../FAQ00');
 /**
  * @author Ty Foster
  * @version 2021.03.25
@@ -39,7 +40,7 @@ const buildFooter = (loggedIn) => {
 const buildHeader = (uname, utype) => {
   // this method should always be called to start the `ServerMessage`
   // Assumes user is logged in
-  let header = '<html><header>'; // opens HTML tag, starts header
+  let header = '<html><header style="margin: 3%;">'; // opens HTML tag, starts header
   header += '<h4>' + uname + ', ' + utype + '</h4>';
   return header + '</header><body>';
 };
@@ -98,6 +99,18 @@ const buildLoginHeader = (loggedOut, uname, utype, status) => {
 }
 
 /**
+ * Generates the HTML text for the search bar to display
+ * 
+ * @param {boolean} student `false` if the user is an instructor, otherwise `true`
+ * @returns {string} HTML text
+ */
+const _buildSearchBar = (student) => {
+  let path = (student) ? SEARCH_BAR_STU : SEARCH_BAR_INST;
+  return fs.readFileSync(path);
+}
+
+
+/**
  * Calculates the HTML div container which displays the information
  * contained in a qObj object
  * 
@@ -106,17 +119,68 @@ const buildLoginHeader = (loggedOut, uname, utype, status) => {
  * @param {Object} qObj QA Object to pass to the function
  * @return {string} HTML container for a QA Object to display in the browser
  */
-const buildQA = (qObj) => {
-  let text = '<div>'; // start container
-  text += '<h4>' + qObj.question + '</h4>'; // question text
-  text += '<p style="color: gray;">' + qObj.answer + '</p>';
-  text += '<div style="color: darkgray; padding-right: 20px;">' +
+const _buildQA = (qObj, student) => {
+  let text = '<div style="margin-top: 20; margin-left: 15%; margin-right: 15%;" ><div style="text-align: left;">'; // start container
+  let ques = '<h4>' + qObj.question + '</h4>';
+  if (student) {
+    text += ques;
+  } else {
+    text += '<div style="display: grid; grid-auto-flow: column;">' + ques; // add question text
+    text += '<form method="POST" action="" style="text-align: right; margin: auto 0 auto 0;"><input type="submit" name="edit" value="Edit" style="margin: 0 10 0 10;"/><input type="submit" name="delete" value="Delete" style="margin: 0 10 0 10;"/>'; // add buttons
+    text += '<input type="hidden" name="id" value="' + qObj.id + '"/>'; // hide question id on page
+    text += '</form></div>'; // close form and container
+  }
+  text += '<p style="color: gray;">' + qObj.answer + '</p></div>';
+  text += '<div style="text-align: center;"><div style="color: darkgray; display: inline-block; padding-right: 20px;">' +
     '<label>author: ' + qObj.author + '</label></div>'; // answer
-  text += '<div style="color: darkgray;">' +
+  text += '<div style="color: darkgray; display: inline-block; padding-right: 20px;">' +
     '<label>tags: ' + qObj.tags + '</label></div>'; // tags
-  text += '<div style="color: darkgray; padding-left: 20px;">' +
-    '<label>date: ' + qObj.date + '</label></div>'; // date
+  text += '<div style="color: darkgray; display: inline-block;">' +
+    '<label>date: ' + qObj.date + '</label></div></div>'; // date
   return text + '</div>'; // close container
+}
+
+/**
+ * Constructs HTML representation of the QA list returned from a search
+ * 
+ * @info HANDLES SEARCH
+ * @param {string} auths string of comma delimited authors
+ * @param {string} tags string of comma delimited tags
+ * @param {string} start ISO Date string
+ * @param {string} end ISO Date string
+ * @returns {string} HTML text representation of a QAList to display
+ */
+const _buildQAList = (auths, tags, start, end, student) => {
+  // get most recent list
+  let faq = new FAQ();
+  let qArr = faq.filterQuestions(auths, tags, start, end);
+  // generate HTML
+  let text = '<div stye="margin-left: 5%;">';
+  qArr.forEach((qObj) => {
+    text += _buildQA(qObj, student);
+  });
+  return text + '</div>';
+}
+
+/**
+ * Generates and sends the Q&A Search page
+ * 
+ * 
+ * @info sends a response to the incoming connection
+ * @warn DOES NOT SET RESPONSE HEAD
+ * @param {ServerMessage} res response to send
+ * @param {Map<string, string>} cookieMap cookies received
+ * @param {string} auths string of comma delimited authors
+ * @param {string} tags 
+ * @param {string} start 
+ * @param {string} end 
+ */
+const buildQAPage = (res, cookieMap, auths, tags, start, end) => {
+  let body = '<body>';
+  body += _buildSearchBar(cookieMap.get('utype') != 'instructor');
+  body += _buildQAList(auths, tags, start, end, cookieMap.get('utype') != 'instructor'); // generates with edit and delete buttons for instructors
+  body += '</body>';
+  ldpg(res, cookieMap, body, true);
 }
 
 /**
@@ -132,13 +196,56 @@ const checkID = (id) => {
   }
   let nums  = getJSONArr(NUMSTORE); //TODO get ids from USERSTORE
   for (let i = 0; i < nums.length; i++) {
-    console.log(nums[i]); console.log(hashCode(String(id)));
-    console.log(nums[i] == hashCode(String(id)));
     if (nums[i] == hashCode(id)) {
       return true
     }
   }
   return false;
+}
+
+/**
+ * 
+ * @param {*} cookies 
+ */
+const _instructor = (cookies) => {
+  let body = '<body>';
+  switch(cookies.get('page')) {
+    case 'add':
+      //TODO add new question
+      //TODO form
+      break;
+    case 'delete':
+      //TODO confirm delete
+      //TODO question
+      //TODO confirm
+      break;
+    case 'edit':
+      // TODO edit question
+      // TODO question
+      // TODO edit form
+      break;
+    default:
+      //TODO search page
+      body += fs.readFileSync(SEARCH_BAR); // search header
+      body += _buildQAList(auths, tags, start, end, false); // question list w/ edit & delete
+      break;
+  }
+  return body + '</body>';
+}
+
+/**
+ * Returns no blank page to user
+ * 
+ * @info sends a page to the user
+ * @warn DOES NOT SET HEAD FOR RESPONSE
+ * @param {ServerMessage} res 
+ * @param {Map<string, string>} cookieMap 
+ * @param {text} body HTML string
+ * @param {boolean} footer 
+ */
+ function ldpg(res, cookieMap, body, footer) {
+  body = body || '';
+  res.end(buildHeader(cookieMap.get('uname'), cookieMap.get('utype')) + body + buildFooter(footer));
 }
 
 /**
@@ -186,8 +293,9 @@ module.exports = {
   buildHeader,
   buildLoginForm,
   buildLoginHeader,
-  buildQA,
+  buildQAPage,
   checkID,
+  ldpg,
   login,
   mapCookies
 };

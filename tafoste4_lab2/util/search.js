@@ -17,7 +17,7 @@ const { varCheck } = require('./util');
  */
 const authMatch = (qObj, auths) => {
   for (let i = 0; i < auths.length; i++) {
-    if (qObj.author.indexOf(auths[i]) >= 0) {
+    if (qObj.author.toLowerCase().indexOf(auths[i].toLowerCase()) >= 0) {
       return true;
     }
   }
@@ -88,7 +88,7 @@ const getIdx = (qArr, id, ques) => {
  */
 const tagMatch = (qObj, tags) => {
   for (let i = 0; i < tags.length; i++) {
-    if (qObj.tags.indexOf(tags[i]) >= 0) {
+    if (qObj.tags.toLowerCase().indexOf(tags[i].toLowerCase()) >= 0) {
       return true;
     }
   }
