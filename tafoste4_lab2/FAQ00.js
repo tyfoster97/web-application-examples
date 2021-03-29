@@ -180,6 +180,8 @@ class FAQ {
         );
       }
 
+      fs.closeSync(fd);
+
       return qArr;
     }
   }

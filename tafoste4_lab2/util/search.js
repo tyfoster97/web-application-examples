@@ -1,7 +1,10 @@
+const fs = require('fs');
+const { getJSONArr } = require('./io');
 const { varCheck } = require('./util');
+const { QSTORE } = require('../constants');
 /**
  * @author Ty Foster
- * @version 2021.03.24
+ * @version 2021.03.28
  * SER 421, Arizona State University
  * Copyright 2021, all rights reserved.
  * 
@@ -62,15 +65,9 @@ const betweenDates = (date, start, end) => {
  * Q&A Object can be found `-1` is returned
  */
 const getIdx = (qArr, id, ques) => {
-  if (varCheck(id)) {
+  if (varCheck(id) || varCheck(ques)) {
     for (let i = 0; i < qArr.length; i++) {
-      if (qArr[i].id === id) {
-        return i;
-      }
-    }
-  } else if (varCheck(ques)) {
-    for (let i = 0; i < qArr.length; i++) {
-      if (qArr[i].question == ques) {
+      if (qArr[i].id == id || qArr[i].question == ques) {
         return i;
       }
     }
@@ -78,6 +75,22 @@ const getIdx = (qArr, id, ques) => {
 
   return -1;
 };
+
+/**
+ * // TODO
+ * @param {*} id 
+ * @returns 
+ */
+const getQ = (id, ques) => {
+  let fd = fs.openSync(QSTORE);
+  let arr = getJSONArr(QSTORE);
+  fs.closeSync(fd);
+  let i = getIdx(arr, Number(id), ques);
+  if (i >= 0) {
+    return arr[i];
+  }
+  return null;
+}
 
 /**
  * Determines if `qObj.tags` contains a `tag` found in `tags`
@@ -99,5 +112,6 @@ module.exports = {
   authMatch,
   betweenDates,
   getIdx,
+  getQ,
   tagMatch
 };
