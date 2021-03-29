@@ -2,7 +2,7 @@ const http = require('http');
 const qstring = require('querystring');
 const { LOGIN_SUCCESSFUL, USER_NOT_FOUND, PASSWORD_MISMATCH, TYPE_MISMATCH } = require('./constants');
 const { mapCookies, buildLoginForm, login, buildLoginHeader, buildFooter, checkID, buildQAPage, loginPage, loginResponse, logoutResponse} = require('./util/server');
-const { hashCode, varCheck } = require('./util/util');
+const { varCheck } = require('./util/util');
 /* for simplicity */
 const pgFoot = '</html></body>';
 /**

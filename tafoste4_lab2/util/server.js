@@ -71,7 +71,7 @@ const editQAPage = (res, cookieMap) => {
   let qObj = getQ(cookieMap.get('quesid'), null);
   let body = '<body>';
   body += fs.readFileSync(EDIT_QA_A);
-  body += qObj.question + '</h4>'; // close heading tag
+  body += qObj.question + '</textarea>'; // close heading tag
   body += fs.readFileSync(EDIT_QA_B);
   body += '>' + qObj.answer + '</textarea>'; // close input tag
   body += fs.readFileSync(EDIT_QA_C);
