@@ -77,9 +77,11 @@ const getIdx = (qArr, id, ques) => {
 };
 
 /**
- * // TODO
- * @param {*} id 
- * @returns 
+ * Pulls an FAQ from the database
+ * 
+ * @param {number} id database identifier for the question
+ * @param {string} ques text for the question (used if no id is provided)
+ * @returns {FAQ} the FAQ with a matching `id` or `question` string
  */
 const getQ = (id, ques) => {
   let fd = fs.openSync(QSTORE);

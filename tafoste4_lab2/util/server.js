@@ -1,4 +1,5 @@
 const fs = require('fs');
+const qstring = require('querystring');
 const { getJSONArr } = require('./io');
 const { hashCode, varCheck } = require('./util');
 const { LOGINFORM_A, LOGINFORM_B, LOGIN_SUCCESSFUL, PASSWORD_MISMATCH, USER_NOT_FOUND, USERSTORE, TYPE_MISMATCH, LOGOUT_BUTTON, NUMSTORE, USER_ERR_MSG, PWD_ERR_MSG, TYPE_ERR_MSG, SEARCH_BAR_STU, SEARCH_BAR_INST, ADD_QA, EDIT_QA_A, EDIT_QA_B, EDIT_QA_C, EDIT_QA_D } = require('../constants');
@@ -14,9 +15,10 @@ const { getQ } = require('./search');
  */
 
 /**
- * //TODO
- * @param {*} res 
- * @param {*} cookieMap 
+ * Generates and displayes the form to add a new question
+ * 
+ * @param {ServerMessage} res HTTP response sent to the client
+ * @param {Map<string, string>} cookieMap collection of cookie keys and values from the client
  */
 const addQAPage = (res, cookieMap) => {
   let body = '<body>';
@@ -36,7 +38,7 @@ const checkID = (id) => {
   if (id == 0 || id == '0' || id == undefined || id == null) {
     return false;
   }
-  let nums = getJSONArr(NUMSTORE); //TODO get ids from USERSTORE
+  let nums = getJSONArr(NUMSTORE);
   for (let i = 0; i < nums.length; i++) {
     if (nums[i] == hashCode(id)) {
       return true
@@ -46,9 +48,10 @@ const checkID = (id) => {
 };
 
 /**
+ * Generates and displays the delete question confirmation page
  * 
- * @param {*} res 
- * @param {*} cookieMap 
+ * @param {ServerMessage} res HTTP response sent to the client
+ * @param {Map<string, string>} cookieMap collection of cookie keys and values from the client
  */
 const delQAPage = (res, cookieMap) => {
   let qObj = getQ(cookieMap.get('quesid'), null);
@@ -63,9 +66,10 @@ const delQAPage = (res, cookieMap) => {
 }
 
 /**
- * // TODO
- * @param {*} res 
- * @param {*} cookieMap 
+ * Generates and dsiplays the edit question confirmation page
+ * 
+ * @param {ServerMessage} res HTTP response sent to the client
+ * @param {Map<string, string>} cookieMap collection of cookie keys and values from the client
  */
 const editQAPage = (res, cookieMap) => {
   let qObj = getQ(cookieMap.get('quesid'), null);
@@ -107,7 +111,6 @@ const loginResponse = (res, data) => {
   let params = qstring.parse(data);
   // check params
   let status = 0;
-  console.log(params);
   if (varCheck(params.username)) {
     if (varCheck(params.password)) {
       if (varCheck(params.usertype)) {
