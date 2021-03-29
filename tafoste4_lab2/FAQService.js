@@ -48,7 +48,7 @@ http.createServer(function (req, res) {
         }
         else if (varCheck(params.addques)) {
           // add question
-          // INFO params.auth and params.ans validated by HTML form
+          // params.auth and params.ans validated by HTML form
           addQuestion(params.ques, params.ans, cookieMap.get('uname'), params.tags);
           // send to search page
           res.writeHead(300, {
