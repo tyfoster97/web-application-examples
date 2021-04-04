@@ -1,0 +1,77 @@
+.nav-bar {
+  margin: 0 1rem 0 1rem;
+}
+
+.nav-link {
+  margin-right: 1rem;
+}
+
+.content{
+  margin: 0 auto 0 auto;
+  max-width: 80%;
+}
+
+.article {
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.forms {
+  display: flex;
+  margin: 0 auto 0 auto;
+  max-width: 80%;
+}
+
+div.add-form {
+  min-width: fit-content;
+  max-width: 25%;
+}
+
+div.delete-form {
+  min-width: fit-content;
+  max-width: 20%;
+}
+
+div.undo-form {
+  min-width: fit-content;
+  max-width: 10%;
+}
+
+form {
+  display: inline-flexbox;
+  margin-left: 2rem;
+}
+
+.centered {
+  text-align: center;
+}
+
+.comments {
+  text-align: left;
+}
+
+.comment {
+  display: flex;
+}
+
+.comment-id {
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.comment-comment {
+  margin-left: 15px;
+}
+
+table {
+  text-align: left;
+}
+
+th {
+  min-width: 50px;
+  padding-right: 10px
+}
+
+td {
+  padding-bottom: 10px;
+}

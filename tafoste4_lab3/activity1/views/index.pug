@@ -1,5 +1,47 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div(class='centered content')
+    h1= title
+    p Welcome to #{title}
+    // article
+    div(class='article')
+      p #{article}
+    // comment section
+    div(class='comments')
+      for comment in comments
+        div(class='comment')
+          label(class='comment-id') Comment ID: 
+          div(class='comment-id') #{comment.id}
+          div(class='comment-comment') #{comment.comment}
+    // comment interaction forms
+    div(class='forms')
+      div(class='add-form')
+        form(action='/add', method='POST')
+          br
+          // for adding a commnent to the article
+          label(for="id") Comment ID: 
+          input(type="text", name="id", required="required")
+          br
+          br
+          label(for="comment") Comment:
+          br 
+          textarea(name="comment", cols="30", rows="10", required="required")
+          br 
+          br
+          input(type="submit", value="Add Comment")
+      div(class='delete-form')
+        form(action='/delete', method='POST')
+          br
+          // for deleting a comment from the article
+          label(for="id") Comment ID: 
+          input(type="text", name="id", required="required")
+          br
+          br
+          input(type="submit", value="Delete Comment")
+      div(class='undo-form')
+        form(action='/undo', method='POST', style="display: flex-block;")
+          br
+          div(class='centered')
+            input(type="submit", value="Undo")
+

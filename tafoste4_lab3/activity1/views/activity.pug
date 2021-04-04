@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div(class='centered content')
+    h1 User Activity
+    table(class='table')
+      tr
+        th Operatition
+        th ID
+        th Comment 
+        th IP 
+        th User-Agent
+      tbody 
+        each activity in activities
+          tr
+            td #{activity.op}
+            td #{activity.operand.id}
+            td #{activity.operand.comment}
+            td #{activity.ip}
+            td #{activity.agent}
