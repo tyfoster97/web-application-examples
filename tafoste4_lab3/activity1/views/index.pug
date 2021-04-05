@@ -20,12 +20,13 @@ block content
         form(action='/add', method='POST')
           br
           // for adding a commnent to the article
-          label(for="id") Comment ID: 
-          input(type="text", name="id", required="required")
-          br
-          br
-          label(for="comment") Comment:
-          br 
+          div.left-align
+            label(for="id") Comment ID: 
+            input(type="text", name="id", required="required")
+            br
+            br
+            label(for="comment") Comment:
+            br 
           textarea(name="comment", cols="30", rows="10", required="required")
           br 
           br
@@ -34,10 +35,11 @@ block content
         form(action='/delete', method='POST')
           br
           // for deleting a comment from the article
-          label(for="id") Comment ID: 
-          input(type="text", name="id", required="required")
-          br
-          br
+          div.left-align
+            label(for="id") Comment ID: 
+            input(type="text", name="id", required="required")
+            br
+            br
           input(type="submit", value="Delete Comment")
       div(class='undo-form')
         form(action='/undo', method='POST', style="display: flex-block;")

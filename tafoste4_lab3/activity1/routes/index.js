@@ -11,4 +11,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Activity 1', article: fs.readFileSync(store), comments: getComments() });
 });
 
+router.all('/', function(req, res, next) {
+  httpErr(405, req, res, next);
+});
+
 module.exports = router;

@@ -10,6 +10,7 @@ var deleteRouter = require('./routes/delete');
 var resetRouter = require('./routes/reset');
 var undoRouter = require('./routes/undo');
 var viewRouter = require('./routes/view');
+const { httpErr } = require('./util/util');
 
 var app = express();
 
@@ -30,20 +31,9 @@ app.use('/reset', resetRouter);
 app.use('/undo', undoRouter);
 app.use('/view', viewRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.use(function(req, res, next) {
+  httpErr(404, req, res, next);
 });
 
 module.exports = app;

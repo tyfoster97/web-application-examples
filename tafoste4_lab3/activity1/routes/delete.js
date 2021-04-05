@@ -1,7 +1,7 @@
 var express = require('express');
 const { addActivity, ops } = require('../util/activity');
 const { deleteComment } = require('../util/comment');
-const { isVar } = require('../util/util');
+const { isVar, httpErr } = require('../util/util');
 var router = express.Router();
 
 /* POST comment to add. */
@@ -18,6 +18,10 @@ router.post('/', function(req, res, next) {
   let status = (deleted) ? 'successful' : 'failed';
   // show status page
   res.render('message', {op: 'Delete', status: status});
+});
+
+router.all('/', function(req, res, next) {
+  httpErr(405, req, res, next);
 });
 
 module.exports = router;
