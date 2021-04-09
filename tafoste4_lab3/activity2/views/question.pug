@@ -1,0 +1,21 @@
+extends layout
+
+block content 
+  div(class='pgcontent centered')
+    div(class='orienation-btn')
+      form(action='/question/' + current + '/' + other_orient, method='get')
+        input(type="submit", value="change orienation")
+    div(class='question')
+      h4= text
+      form(method="post" action='/question/')
+        input(type="hidden", name="qid", value=current)
+        for option in answers
+          label= option
+          input(type="radio", name='answer', required='required' value=option)
+          if (orient == 'v')
+            br
+        br
+        div(class='nav-buttons')
+          input(type="submit", value="prev")
+          input(type="submit", value="next")
+        
