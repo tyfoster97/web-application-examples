@@ -38,7 +38,6 @@ function checkReview() {
 function setup() {
   document.getElementById('btn_uname').onclick = submitName;
   _checkUser();
-  const timer = new Timer(30); // 30s afk timeout
   window.setInterval(Timer.check, 1000);
   document.onclick = Timer.reset;
   document.onkeypress = Timer.reset;
