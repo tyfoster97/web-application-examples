@@ -1,3 +1,9 @@
+const heading = 'Fifth Element critic reviews';
+const rev1 = 'An entertaining tangle of pop aesthetic and comic book myth that occasionally bogs down, but manages to be ingratiating for all its defects. - Washington Post';
+const rev2 = 'As a yammering, swishy talk show host, Chris Tucker is flat-out incomprehensible, while Mr. Oldman preens evilly enough to leave tooth marks on the scenery. - New York Times';
+const rev3 = 'It may or may not be the worst movie ever made, but it is one of the most unhinged. - Slate';
+const rev_id = 'reviews';
+const ta_id = 'user_comment';
 /**
  * @file activity3.js
  * @version 2021.04.10
@@ -14,15 +20,43 @@ function setup() {
   document.getElementById('btn_uname').onclick = submitName;
   // check if user has previously logged in
   _hasVisited();
-  // set timeout
-  window.setTimeout(_idleMsg, 30 * 1000); // 30s timeout
+  // set afk timer
+  window.setInterval(Timer.check, 1000);
+  document.onclick = Timer.reset;
+  document.onkeypress = Timer.reset;
+  document.onmousemove = Timer.reset;
 }
 
 /**
  * Handles submitting a content from the text area
  */
 function submitComment() {
-
+  const ta = document.getElementById(ta_id);
+  let comment = ta.value;
+  if (comment.includes('{') || comment.includes('}')) {
+    // handle JSON Object
+    try {
+      const obj = JSON.parse(text);
+      if (Dictionary.addData(obj)) {
+        alert('Word added to the dictionary and the dictionary is smarter');
+      } else {
+        alert('Could not find the proper key and the dictionary stays dumb');
+      }
+    } catch (err) {
+      alert('Invalid JSON! Please enter a valid JSON!');
+    }
+  } else {
+    const arr = comment.split(/\s+/);
+    if (arr[0].startsWith('/')) {
+      //TODO handle command
+    } else {
+      // handle review
+      Dictionary.censor(arr);
+      const censored_comment = arr.join(' ');
+      ta.value = censored_comment;
+      //TODO save uncensored and censored reviews to memory
+    }
+  }
 }
 
 /**
@@ -40,7 +74,17 @@ function submitName() {
  * @param p the paragraph element containing the reviews
  */
 function _addUserComments(p) {
+  //TODO get user comments from local storage
+  //TODO load user comments on page
+}
 
+/**
+ * Creates a line break HTML Element
+ * 
+ * @returns a break HTMLElement
+ */
+function _br() {
+  return document.createElement('br');
 }
 
 /**
@@ -48,21 +92,20 @@ function _addUserComments(p) {
  * restoring the previous state for the user
  */
 function _hasVisited() {
-
+  let uname;
+  uname = window.localStorage.getItem('uname');
+  if (uname) {
+    document.getElementById('u_name').value = uname;
+    _welcomeMsg(uname);
+    alert(`Welcome back ${uname}`);
+    let d = window.localStorage.getItem('dict');
+    if (d) {
+      //TODO have dictionary save to local storage when ameliorated
+      dict.entries = d.entries; // substitute entries
+    }
+  }
 }
 
-/**
- * Handles displaying an idle message to the user
- */
-function _idleMsg() {
-
-}
-
-const heading = 'Fifth Element critic reviews';
-const rev1 = 'An entertaining tangle of pop aesthetic and comic book myth that occasionally bogs down, but manages to be ingratiating for all its defects. - Washington Post';
-const rev2 = 'As a yammering, swishy talk show host, Chris Tucker is flat-out incomprehensible, while Mr. Oldman preens evilly enough to leave tooth marks on the scenery. - New York Times';
-const rev3 = 'It may or may not be the worst movie ever made, but it is one of the most unhinged. - Slate';
-const ta_id = 'user_comment';
 /**
  * Handles displaying the review section
  * 
@@ -72,26 +115,24 @@ function _reviewSection(div) {
   // make heading nodes
   const h3 = document.createElement('h3');
   const h3_text = document.createTextNode(heading);
-  
+  h3.appendChild(h3_text);
+
   // make review nodes
   const p = document.createElement('p');
   // review 1
   let p_text = document.createTextNode(rev1);
   p.appendChild(p_text);
-  const br = document.createElement('br');
-  p.appendChild(br);
+  p.appendChild(_br());
   // review 2
   p_text = document.createTextNode(rev2);
   p.appendChild(p_text);
-  const br = document.createElement('br');
-  p.appendChild(br);
+  p.appendChild(_br());
   // review 3
   p_text = document.createTextNode(rev3);
   p.appendChild(p_text);
-  const br = document.createElement('br');
-  p.appendChild(br);
+  p.appendChild(_br());
   //TODO _addUserComments(p);
-  
+
   // make user input section
   const form = document.createElement('form');
   const label = document.createElement('label');
@@ -102,6 +143,7 @@ function _reviewSection(div) {
   textarea.id = ta_id;
   textarea.rows = '10';
   textarea.cols = '60';
+  textarea.required;
   textarea.style.maxWidth = '100%';
   const btn = document.createElement('input');
   btn.type = 'button';
@@ -117,7 +159,6 @@ function _reviewSection(div) {
   div.appendChild(form);
 }
 
-const rev_id = 'reviews'; // for refactorability
 /**
  * Handles displaying the welcome message to the user
  * 
