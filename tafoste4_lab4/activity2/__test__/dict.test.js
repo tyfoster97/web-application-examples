@@ -1,69 +1,65 @@
-const dict = require('../utils/dict');
+const { dict } = require('../dictionary-1');
+const { Dictionary } = require('../utils/dictionary');
 /**
  * @file dict.test.js
  * @version 2021.04.09
  * @author Ty Foster
  * 
- * File for testing dict.js functions
+ * File for testing dictionary.js functions
  */
 
-const { getDictionary } = require("../utils/dict");
+let d;
+let safe_d;
 
-describe('File I/O', () => {
-  test('read from file', async () => {
-    const d = await dict.getDictionary();
-    expect(d.entries).toEqual(
-      [{
-        "key": ["stupid", "dumb", "idiot", "unintelligent", "simple-minded", "braindead", "foolish", "unthoughtful"],
-        "answer": ["educated", "informed", "schooled"]
-      }, {
-        "key": ["unattractive", "hideous", "ugly"],
-        "answer": ["attractive", "beauteous", "beautiful", "lovely", "pretty", "ravishing"]
-      }, {
-        "key": ["ambiguous", "cryptic", "dark", "nebulous", "obscure", "unintelligible"],
-        "answer": ["obvious", "plain", "unambiguous", "understandable", "unequivocal"]
-      }, {
-        "key": ["incapable", "incompetent", "inept", "unable", "unfit", "unqualified", "weak", "artless"],
-        "answer": ["accomplished", "fit", "adept", "complete", "consummate"]
-      }, {
-        "key": ["emotionless", "heartless", "unkind", "mean", "selfish", "evil"],
-        "answer": ["benevolent", "benignant", "gentle", "kind", "clement"]
-      }, {
-        "key": ["idle"],
-        "answer": ["Can you reply something?", "You have been idle for more than 30 seconds", "Whats the matter with you? Submit something"]
-      }]
-    );
-  });
+beforeAll(() => {
+  d = dict;
+  safe_d = dict;
+})
 
-  test('write to file', async () => {
-
-  });
+beforeEach(async () => {
+  d = safe_d;
 });
 
 describe('Word processing', () => {
-  test('Word not in dictionary', () => {
+  const mockMath = Object.create(global.Math);
+  mockMath.random = () => 0; // guarantee first element selected
+  global.Math = mockMath;
 
+  test('Word not in dictionary', () => {
+    const arr = ['badass'];
+    Dictionary.censor(d, arr);
+    expect(arr).toEqual(['badass']);
   });
 
   test('Word in dictionary', () => {
-
+    const arr = ['cryptic'];
+    Dictionary.censor(d, arr);
+    expect(arr).toEqual(['obvious']);
   });
 
-  test('5 copies are not all same replacement', () => { // this test could fail, unlikely
-
+  test('Word ends with punctiation', () => {
+    const arr = ['cryptic,', 'dumb.', '(ugly)'];
+    Dictionary.censor(d, arr);
+    expect(arr).toEqual(['obvious,', 'educated.', '(attractive)']);
   });
+
+  test('idle message', () => {
+    const arr = ['idle'];
+    Dictionary.censor(d, arr)
+    expect(arr).toEqual(['idle']);
+  })
 });
 
 describe('Add words to dictionary', () => {
-  test('word already present', () => {
-
+  test('word already present', async () => {
+    expect(Dictionary.addData(d, {stupid: 'educated'})).toBe(true);
   });
 
-  test('word not present', () => {
-
+  test('word not present', async () => {
+    expect(Dictionary.addData(d, {stupid: 'intelligent'})).toBe(true);
   });
 
-  test('key not present', () => {
-
+  test('key not present', async () => {
+    expect(Dictionary.addData(d, {tim: 'beautiful'})).toBe(false);
   });
-})
+});

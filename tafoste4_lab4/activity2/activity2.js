@@ -1,4 +1,3 @@
-const dict = require('dict');
 /**
  * @file activity2.js
  * @version 2021.04.09
@@ -8,12 +7,39 @@ const dict = require('dict');
  */
 
 /**
+ * Handles interpreting a user review
+ */
+function checkReview() {
+  const comment = document.getElementById('user_comment');
+  let text = comment.value;
+  // check if text contains a JSON
+  if (text.includes('{') || text.includes('}')) {
+    // try to parse
+    try {
+      const obj = JSON.parse(text);
+      if (Dictionary.addData(dict, obj)) {
+        alert('Word added to the dictionary and the dictionary is smarter');
+      } else {
+        alert('Could not find the proper key and the dictionary stays dumb');
+      }
+    } catch (err) {
+      console.log(err);
+      alert('Invalid JSON! Please enter a valid JSON!');
+    }
+  } else {
+    const arr = text.split(/\s+/);
+    Dictionary.censor(dict, arr);
+    comment.value = arr.join(' ');
+  }
+}
+
+/**
  * Handles initial page setup after the body loads
  */
 function setup() {
   document.getElementById('btn_uname').onclick = submitName;
   _checkUser();
-  //window.setTimeout(dict.getIdleMsg, 30*1000);
+  window.setTimeout(_idleMsg, 30 * 1000);
 }
 
 /**
@@ -47,28 +73,11 @@ function _checkUser() {
 }
 
 /**
- * Appends the welcome message to the page
- * 
- * @param {string} uname the user's name
+ * Handles displaying an idle message
  */
-function _welcomeMsg(uname) {
-  try {
-    document.getElementById('reviews').remove();
-  } catch (err) {
-    //do nothing
-  }
-  const div = document.createElement('div');
-  div.id = 'reviews';
-  const p = document.createElement('p'); // make element node
-  const msg = document.createTextNode(
-    `${uname} Welcome to the movie review System! Please enter your comments about the movie`
-  ); // make the text node
-  p.appendChild(msg); // set up element for appending to body
-  div.appendChild(p); // display on page
-  document.body.appendChild(div);
-  p.onload = _reviews(div);
+function _idleMsg() {
+  alert(Dictionary.idleMsg(dict));
 }
-
 /**
  * Appends the reviews section to the body of the page
  * 
@@ -97,7 +106,7 @@ function _reviews(div) {
   p.appendChild(pText);
   p.appendChild(document.createElement('br')); // for formatting
   pText = document.createTextNode(
-    'It may or may not be the worst movie ever made, but it is one of the most unhinged. - Slate' 
+    'It may or may not be the worst movie ever made, but it is one of the most unhinged. - Slate'
   );
   p.appendChild(pText);
   // add reviews to div
@@ -132,8 +141,24 @@ function _reviews(div) {
 }
 
 /**
+ * Appends the welcome message to the page
  * 
+ * @param {string} uname the user's name
  */
-function checkReview() {
-  console.log(document.getElementById('user_comment').value);
+function _welcomeMsg(uname) {
+  try {
+    document.getElementById('reviews').remove();
+  } catch (err) {
+    //do nothing
+  }
+  const div = document.createElement('div');
+  div.id = 'reviews';
+  const p = document.createElement('p'); // make element node
+  const msg = document.createTextNode(
+    `${uname} Welcome to the movie review System! Please enter your comments about the movie`
+  ); // make the text node
+  p.appendChild(msg); // set up element for appending to body
+  div.appendChild(p); // display on page
+  document.body.appendChild(div);
+  _reviews(div); // display rerviews
 }
