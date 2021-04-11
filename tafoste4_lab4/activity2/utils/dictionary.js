@@ -36,19 +36,18 @@ class Dictionary {
   /**
    * Attempts to add data to Dictionary, indicates if data was added
    * 
-   * @param {Dictionary} d the Dictionary
    * @param {Object} obj the key: value pair
    * @returns {boolean} `true` if the data was added, `false` otherwise
    */
-  static addData(d, obj) {
+  static addData(obj) {
     let added = false;
     // check if obj has valid key
-    const keys = Dictionary.keys(d);
+    const keys = Dictionary.keys();
     for (const key of keys) {
       if (obj[key]) {
         // add obj[key] to entry with key as key
-        const idx = Dictionary._entryIdx(d, key);
-        Entry.addAnswer(d.entries[idx], obj[key]);
+        const idx = Dictionary._entryIdx(key);
+        Entry.addAnswer(dict.entries[idx], obj[key]);
         added = true;
       }
     }
@@ -59,18 +58,17 @@ class Dictionary {
    * Censors words in the dictionary if there is a match
    * to a key in a Dictionary
    * 
-   * @param {Dictionary} d the Dictionary
    * @param {Array<string>} arr the Array of strings to censor
    */
-  static censor(d, arr) {
-    const keys = Dictionary.keys(d); // saves compute time
+  static censor(arr) {
+    const keys = Dictionary.keys(); // saves compute time
     // loop through every element in arr
     for (const i in arr) {
       const key = arr[i].replace(/[^\w-]/g, ''); // remove punctuation
       if (keys.includes(key) && key != 'idle') { // key is in dictionary and is not idle
         // idle ignored because it is supposed to be used to display idle message
         // find replacement
-        const ans = Dictionary._answer(d, key);
+        const ans = Dictionary._answer(key);
         arr[i] = arr[i].replace(key, ans); // replace
       }
     }
@@ -79,11 +77,10 @@ class Dictionary {
   /**
    * Obtains an idle message from a Dictionary
    * 
-   * @param {Dictionary} d the Dictionary to use
    * @returns {string} the idle message
    */
-  static idleMsg(d) {
-    return Dictionary._answer(d, 'idle');
+  static idleMsg() {
+    return Dictionary._answer('idle');
   }
 
   /**
@@ -92,9 +89,9 @@ class Dictionary {
    * @param {Dictionary} d the Dictionary
    * @returns the keys in the Dictionary
    */
-  static keys(d) {
+  static keys() {
     let keys = [];
-    for (const entry of d.entries) {
+    for (const entry of dict.entries) {
       for (const key of entry.key) {
         keys.push(key);
       }
@@ -106,27 +103,25 @@ class Dictionary {
    * Gets an answer from an Entry with a matching key
    * 
    * @warn ASSUMES ENTRY EXISTS
-   * @param {Dictionary} d the Dictionary with the Entry
    * @param {string} key the key for the Entry
    * @returns {string} the answer from the Entry
    */
-   static _answer(d, key) {
-    const entry = Dictionary._entry(d, key);
+   static _answer(key) {
+    const entry = Dictionary._entry(key);
     return Entry.getAnswer(entry);
   }
 
   /**
    * Finds the Entry with a matching key in a Dictionary
    * 
-   * @param {Dictionary} d the Dictionary
    * @param {string} key the key
    * @returns {Entry} the Entry, `null` if no Entry can be found
    */
-  static _entry(d, key) {
+  static _entry(key) {
     let entry = null;
-    for (let i = 0; i < d.entries.length && !entry; i++) {
-      if (d.entries[i].key.includes(key)) {
-        entry = d.entries[i];
+    for (let i = 0; i < dict.entries.length && !entry; i++) {
+      if (dict.entries[i].key.includes(key)) {
+        entry = dict.entries[i];
       }
     }
     return entry;
@@ -136,14 +131,13 @@ class Dictionary {
    * Determines the index of an Entry with a matching key in its
    * key list.
    * 
-   * @param {Dictionary} d the Dictionary
    * @param {string} key the key to match
    * @returns {number} the index
    */
-  static _entryIdx(d, key) {
+  static _entryIdx(key) {
     let idx = -1;
-    for (const i in d.entries) {
-      if (d.entries[i].key.includes(key)) {
+    for (const i in dict.entries) {
+      if (dict.entries[i].key.includes(key)) {
         idx = i;
       }
     }

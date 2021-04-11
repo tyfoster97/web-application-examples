@@ -17,18 +17,17 @@ function checkReview() {
     // try to parse
     try {
       const obj = JSON.parse(text);
-      if (Dictionary.addData(dict, obj)) {
+      if (Dictionary.addData(obj)) {
         alert('Word added to the dictionary and the dictionary is smarter');
       } else {
         alert('Could not find the proper key and the dictionary stays dumb');
       }
     } catch (err) {
-      console.log(err);
       alert('Invalid JSON! Please enter a valid JSON!');
     }
   } else {
     const arr = text.split(/\s+/);
-    Dictionary.censor(dict, arr);
+    Dictionary.censor(arr);
     comment.value = arr.join(' ');
   }
 }
@@ -39,7 +38,11 @@ function checkReview() {
 function setup() {
   document.getElementById('btn_uname').onclick = submitName;
   _checkUser();
-  window.setTimeout(_idleMsg, 30 * 1000);
+  const timer = new Timer(30); // 30s afk timeout
+  window.setInterval(Timer.check, 1000);
+  document.onclick = Timer.reset;
+  document.onkeypress = Timer.reset;
+  document.onmousemove = Timer.reset;
 }
 
 /**
@@ -72,12 +75,6 @@ function _checkUser() {
   }
 }
 
-/**
- * Handles displaying an idle message
- */
-function _idleMsg() {
-  alert(Dictionary.idleMsg(dict));
-}
 /**
  * Appends the reviews section to the body of the page
  * 
