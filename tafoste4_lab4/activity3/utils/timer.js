@@ -17,7 +17,6 @@ class Timer {
    */
   static check() {
     time++;
-    console.log(time);
     if (time >= timeout) {
       alert(Dictionary.idleMsg());
       Timer.reset();

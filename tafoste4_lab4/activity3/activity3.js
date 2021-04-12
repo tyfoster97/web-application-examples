@@ -2,6 +2,7 @@ const heading = 'Fifth Element critic reviews';
 const rev1 = 'An entertaining tangle of pop aesthetic and comic book myth that occasionally bogs down, but manages to be ingratiating for all its defects. - Washington Post';
 const rev2 = 'As a yammering, swishy talk show host, Chris Tucker is flat-out incomprehensible, while Mr. Oldman preens evilly enough to leave tooth marks on the scenery. - New York Times';
 const rev3 = 'It may or may not be the worst movie ever made, but it is one of the most unhinged. - Slate';
+const res_id = 'response';
 const rev_id = 'reviews';
 const ta_id = 'user_comment';
 /**
@@ -48,13 +49,50 @@ function submitComment() {
   } else {
     const arr = comment.split(/\s+/);
     if (arr[0].startsWith('/')) {
-      //TODO handle command
+      _welcomeMsg(localStorage.getItem('uname')); // redraw review section
+      // handle command
+      switch(arr[0]) {
+        case '/clear':
+          clear();
+          break;
+        case '/count':
+          count();
+          break;
+        case '/history':
+          history();
+          break;
+        case '/list':
+          list();
+          break;
+        case '/search':
+          if (arr[1]) {
+            search(arr[1]);
+          } else {
+            alert('Please enter a word to search');
+          }
+          break;
+        default: 
+          alert('The command you entered is not valid, valid commands are:\n /search <word>, /clear, /history, /count, and /list');
+          break;
+      }
     } else {
       // handle review
       Dictionary.censor(arr);
       const censored_comment = arr.join(' ');
-      ta.value = censored_comment;
-      //TODO save uncensored and censored reviews to memory
+      // save uncensored reviews to session
+      const actual = JSON.parse(sessionStorage.getItem('actual') || '[]');
+      actual.push(comment);
+      sessionStorage.setItem('actual', JSON.stringify(actual));
+      // save censored to session and local
+      const session_comments = JSON.parse(sessionStorage.getItem('comments') || '[]');
+      session_comments.push(censored_comment);
+      sessionStorage.setItem('comments', JSON.stringify(session_comments));
+      const local_comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      local_comments.push(`${censored_comment} - ${localStorage.getItem('uname')}`);
+      localStorage.setItem('comments', JSON.stringify(local_comments));
+      // re-render reviews section
+      _welcomeMsg(localStorage.getItem('uname'));
+      document.getElementById(ta_id).value = censored_comment;
     }
   }
 }
@@ -64,7 +102,7 @@ function submitComment() {
  */
 function submitName() {
   const uname = document.getElementById('u_name').value; // get
-  window.localStorage.setItem('uname', uname); // store
+  localStorage.setItem('uname', uname); // store
   _welcomeMsg(uname); // display welcome message
 }
 
@@ -74,8 +112,12 @@ function submitName() {
  * @param p the paragraph element containing the reviews
  */
 function _addUserComments(p) {
-  //TODO get user comments from local storage
-  //TODO load user comments on page
+  const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+  // load user comments on page
+  for (comment of comments) {
+    p.appendChild(document.createTextNode(comment));
+    p.appendChild(_br());
+  }
 }
 
 /**
@@ -93,12 +135,12 @@ function _br() {
  */
 function _hasVisited() {
   let uname;
-  uname = window.localStorage.getItem('uname');
+  uname = localStorage.getItem('uname');
   if (uname) {
     document.getElementById('u_name').value = uname;
     _welcomeMsg(uname);
     alert(`Welcome back ${uname}`);
-    let d = window.localStorage.getItem('dict');
+    let d = JSON.parse(localStorage.getItem('dict'));
     if (d) {
       //TODO have dictionary save to local storage when ameliorated
       dict.entries = d.entries; // substitute entries
@@ -131,7 +173,7 @@ function _reviewSection(div) {
   p_text = document.createTextNode(rev3);
   p.appendChild(p_text);
   p.appendChild(_br());
-  //TODO _addUserComments(p);
+  _addUserComments(p);
 
   // make user input section
   const form = document.createElement('form');

@@ -60,7 +60,23 @@ class Entry {
   static getAnswer(e) {
     let answer = '';
     if (e.answer.length > 0) {
-      answer = e.answer[Math.floor(Math.random() * e.answer.length)]; // randomly select
+      let used = sessionStorage.getItem(e.key[0]) || '[]';
+      used = JSON.parse(used);
+      if (used.length == e.answer.length) {
+        sessionStorage.removeItem(e.key[0]);
+        used = [];
+      }
+      // randomly select
+      let idx = Math.floor(Math.random() * e.answer.length)
+      answer = e.answer[idx]; 
+      // select again until unused answer selected
+      while(used.includes(answer)) {
+        idx = (idx + 1) % e.answer.length;
+        answer = e.answer[idx];
+      }
+      // update used answers list for Entry
+      used.push(answer);
+      sessionStorage.setItem(e.key[0], JSON.stringify(used));
     }
     return answer;
   };

@@ -49,6 +49,7 @@ class Dictionary {
         // add obj[key] to entry with key as key
         const idx = Dictionary._entryIdx(key);
         Entry.addAnswer(dict.entries[idx], obj[key]);
+        localStorage.setItem('dict', JSON.stringify(dict));
         added = true;
       }
     }
@@ -69,6 +70,14 @@ class Dictionary {
       if (keys.includes(key) && key != 'idle') { // key is in dictionary and is not idle
         // idle ignored because it is supposed to be used to display idle message
         // find replacement
+        // increment bad word count
+        const count = Number(sessionStorage.getItem('rude_count'));
+        if (count) {
+          sessionStorage.setItem('rude_count', String(count + 1));
+        } else {
+          sessionStorage.setItem('rude_count', '1');
+        }
+        // get answer
         const ans = Dictionary._answer(key);
         arr[i] = arr[i].replace(key, ans); // replace
       }
