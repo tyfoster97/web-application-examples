@@ -33,10 +33,11 @@ const currencies = {
 };
 
 /***********************************************************
- * Handles an AJAX Reuqest to the Server
+ * Opens an AJAX Reuqest to the Server
  * 
  * @param {string} address the address for the HTTP request
  * @param {string} methodType the REST API method type
+ * @param {string} currency (Optional) the currency type
  */
 function ajaxRequest(address, methodType, currency) {
   const request = _getRequest(); // can return null
