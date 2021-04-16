@@ -53,13 +53,22 @@ function _getRequest() {
 }
 
 /***********************************************************
+ * Handles changing the page display after a Pop request
+ * 
+ * @param {Array<Object>} stack the stack of commands
+ */
+function _processPop(stack) {
+  //TODO
+}
+
+/***********************************************************
  * Handles displaying the result of a conversion to the
  * Single Page Application
  * 
  * @param {string} currency_type the currency type
  * @param {number} amount the converted amount
  */
-function _processConversion(currency_type, amount) {
+function _showConversion(currency_type, amount) {
   //TODO
 }
 
@@ -67,18 +76,8 @@ function _processConversion(currency_type, amount) {
  * Handles displaying the history of commands for the
  * Single Page Application
  * 
- * @param {Array} stack the stack of commands
+ * @param {Array<Object>} stack the stack of commands
  */
-function _processHistory(stack) {
-  //TODO
-}
-
-/***********************************************************
- * Handles popping an element off of the stack of commands
- * issued in the Single Page Application
- * 
- * @param {Array} stack the stack of commands
- */
-function _processPop(stack) {
+function _showHistory(stack) {
   //TODO
 }
