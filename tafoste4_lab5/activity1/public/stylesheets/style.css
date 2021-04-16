@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+section {
+  margin-top: 5px;
+}
+
+#euro_btn, #pound_btn, #pop_btn, #reset_btn {
+  margin-right: 5px;
+}
