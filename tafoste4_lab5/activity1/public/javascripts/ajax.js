@@ -39,26 +39,27 @@ const currencies = {
  * @param {string} methodType the REST API method type
  * @param {string} currency (Optional) the currency type
  */
-function ajaxRequest(address, methodType, currency) {
-  const request = _getRequest(); // can return null
+async function ajaxRequest(address, methodType, currency) {
+  const request = await _getRequest(); // can return null
   if (request) {
     request.onreadystatechange = function () { _handle(request); };
-    const amt = Number(document.getElementById('amount').innerText);
+    const amt = document.getElementById('amount').value;
     if (methodType == 'POST' && !isNaN(amt)) {
       if (
         currency == currencies.EU ||
         currency == currencies.UK ||
         currency == currencies.US
       ) {
-        address += `?currencies=?${currency}&amount=${amt}`;
+        address += `?currencies=${currency}&amount=${amt}`;
+        _openRequest(request, methodType, address);
       } else {
         alert(`${currency} is not a supported currency`);
       }
+    } else if (isNaN(amt)) {
+      alert('Please enter a number');
     } else {
-      alert(`Please enter a number`);
+      _openRequest(request, methodType, address);
     }
-    request.open(methodType, address, true);
-    request.send(null);
   } else {
     console.error('Error: ajaxRequest could not obtain the XMLHttpRequest');
   }
@@ -72,7 +73,13 @@ function ajaxRequest(address, methodType, currency) {
  */
 function _handle(request) {
   //TODO
-  if (status == )
+  if (request.readyState == 4) {
+    if (request.status == 200) {
+      alert(request.responseText);
+    } else {
+      // error handling
+    }
+  }
 }
 
 
@@ -81,12 +88,24 @@ function _handle(request) {
  * 
  * @returns the XMLHttpRequest Object
  */
-function _getRequest() {
+async function _getRequest() {
   if (window.XMLHttpRequest) {
     return new XMLHttpRequest();
   } else {
     return null;
   }
+}
+
+/***********************************************************
+ * Opens and sends a request to the server
+ * 
+ * @param {XMLHttpRequest} request the XML HTTP Request
+ * @param {string} methodType the REST API method
+ * @param {string} address the uri for the resource
+ */
+function _openRequest(request, methodType, address) {
+  request.open(methodType, address, true);
+  request.send(null);
 }
 
 /***********************************************************
