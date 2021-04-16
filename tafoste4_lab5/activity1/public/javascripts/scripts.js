@@ -4,7 +4,7 @@
  * @author Ty Foster
  * SER 421, Arizona State University
  * Copyright 2021, All rights reserved.
- * 
+ *
  * This file contains methods for the Single Page Application
  */
 
@@ -25,29 +25,29 @@ function setup() {
   });
   // Euro button
   const eu_btn = document.getElementById('euro_btn');
-  eu_btn.addEventListener('click', function () {
-    ajaxRequest('/euro', methods.POST, currencies.EU);
+  eu_btn.addEventListener('click', async function () {
+    await ajaxRequest('/euro', methods.POST);
   });
   // Pound button
   const uk_btn = document.getElementById('pound_btn');
-  uk_btn.addEventListener('click', function () {
-    ajaxRequest('/pound', methods.POST, currencies.UK);
+  uk_btn.addEventListener('click', async function () {
+    await ajaxRequest('/pound', methods.POST);
   });
   // Pop button
   const pop_btn = document.getElementById('pop_btn');
-  pop_btn.addEventListener('click', function () {
-    ajaxRequest('/pop', methods.GET, currencies.EU);
+  pop_btn.addEventListener('click', async function () {
+    await ajaxRequest('/pop', methods.GET, currencies.EU);
   });
   // Reset button
   const reset_btn = document.getElementById('reset_btn');
   reset_btn.disabled = true; //FIX enable when stack has elements
-  reset_btn.addEventListener('click', function () {
-    ajaxRequest('/reset', methods.GET, currencies.EU);
+  reset_btn.addEventListener('click', async function () {
+    await ajaxRequest('/reset', methods.GET, currencies.EU);
   });
   // History button
   const history_btn = document.getElementById('history_btn');
-  history_btn.addEventListener('click', function () {
-    ajaxRequest('/history', methods.GET, currencies.EU);
+  history_btn.addEventListener('click', async function () {
+    await ajaxRequest('/history', methods.GET, currencies.EU);
   });
 }
 
