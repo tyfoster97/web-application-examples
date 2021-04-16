@@ -49,7 +49,11 @@ function ajaxRequest(address, methodType, currency) {
  * @returns the XMLHttpRequest Object
  */
 function _getRequest() {
-  //TODO
+  if (window.XMLHttpRequest) {
+    return new XMLHttpRequest();
+  } else {
+    return null;
+  }
 }
 
 /***********************************************************
