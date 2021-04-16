@@ -1,5 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  label Currency value is: #{amount} in #{currency_type}
+  form
+    section
+      label(for="amount") ENTER IN USD 
+      input(type="text", name="amount", id="amount")
+      br
+    section
+      input(id="euro_btn", type="button", value="Euro")
+      input(id="pound_btn", type="button", value="Pound")
+      input(id="pop_btn", type="button", value="Pop")
+      input(id="reset_btn", type="button", value="Reset")
+      input(id="history_btn", type="button", value="History")
+  section(id="history")
