@@ -1,15 +1,14 @@
 extends layout
 
 block content
-  p(id="result") Currency value is: #{amount} in #{currency_type}
-  form
-    label(for="amount") ENTER IN USD 
-    input(type="text", name="amount", id="amount", value="0")
-    br
-    section
-      button(id="euro_btn") Euro
-      button(id="pound_btn") Pound
-      button(id="pop_btn") Pop
-      button(id="reset_btn") Reset
-      button(id="history_btn") History
+  p(id="result") Currency value is: 0 in USD
+  label(for="amount") ENTER IN USD
+  input(type="text", name="amount", id="amount", value="0")
+  br
+  section
+    button(id="euro_btn") Euro
+    button(id="pound_btn") Pound
+    button(id="pop_btn") Pop
+    button(id="reset_btn") Reset
+    button(id="history_btn") History
   section(id="history")
