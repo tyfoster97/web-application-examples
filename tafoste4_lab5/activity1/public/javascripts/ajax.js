@@ -44,7 +44,7 @@ function ajaxRequest(address, methodType, currency) {
   if (request) {
     request.onreadystatechange = function () { _handle(request); };
     const amt = Number(document.getElementById('amount').innerText);
-    if (!isNaN(amt)) {
+    if (methodType == 'POST' && !isNaN(amt)) {
       if (
         currency == currencies.EU ||
         currency == currencies.UK ||
@@ -72,6 +72,7 @@ function ajaxRequest(address, methodType, currency) {
  */
 function _handle(request) {
   //TODO
+  if (status == )
 }
 
 
