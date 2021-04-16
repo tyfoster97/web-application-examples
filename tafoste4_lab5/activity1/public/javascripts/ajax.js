@@ -50,7 +50,7 @@ function ajaxRequest(address, methodType, currency) {
         currency == currencies.UK ||
         currency == currencies.US
       ) {
-        address += `?currencies=?${currrency}&amount=${amt}`;
+        address += `?currencies=?${currency}&amount=${amt}`;
       } else {
         alert(`${currency} is not a supported currency`);
       }
