@@ -4,26 +4,18 @@
  * @author Ty Foster
  * SER 421, Arizona State University
  * Copyright 2021, All rights reserved.
- * 
+ *
  * This file contains methods for making and processing AJAX calls to the server
  */
 
 /*****************************
- * REST API method constants
- */
-const methods = {
-  GET: 'GET',
-  POST: 'POST'
-}
-
-/*****************************
  * Currency constants
- * 
- * @property {string} EU 
+ *
+ * @property {string} EU
  * corresponds to EURO
- * @property {string} UK 
+ * @property {string} UK
  * corresponds to POUND
- * @property {string} US 
+ * @property {string} US
  * corresponds to USD
  */
 const currencies = {
@@ -32,9 +24,17 @@ const currencies = {
   US: 'USD'
 };
 
+/*****************************
+ * REST API method constants
+ */
+ const methods = {
+  GET: 'GET',
+  POST: 'POST'
+}
+
 /***********************************************************
  * Opens an AJAX Reuqest to the Server
- * 
+ *
  * @param {string} address the address for the HTTP request
  * @param {string} methodType the REST API method type
  * @param {string} currency (Optional) the currency type
@@ -45,16 +45,9 @@ async function ajaxRequest(address, methodType, currency) {
     request.onreadystatechange = function () { _handle(request); };
     const amt = document.getElementById('amount').value;
     if (methodType == 'POST' && !isNaN(amt)) {
-      if (
-        currency == currencies.EU ||
-        currency == currencies.UK ||
-        currency == currencies.US
-      ) {
-        address += `?currencies=${currency}&amount=${amt}`;
-        _openRequest(request, methodType, address);
-      } else {
-        alert(`${currency} is not a supported currency`);
-      }
+      address += `?amount=${amt}`;
+      console.log(address);
+      _openRequest(request, methodType, address);
     } else if (isNaN(amt)) {
       alert('Please enter a number');
     } else {
@@ -68,14 +61,27 @@ async function ajaxRequest(address, methodType, currency) {
 
 /***********************************************************
  * Handles an XML HTTP Request on status change
- * 
+ *
  * @param {XMLHttpRequest} request the request
  */
-function _handle(request) {
+async function _handle(request) {
   //TODO
   if (request.readyState == 4) {
     if (request.status == 200) {
-      alert(request.responseText);
+      const data = JSON.parse(request.responseText);
+      switch(data.op) {
+        case 'pop': // need to fill answer and history
+        case 'euro': // see above
+        case 'pound': // see above
+          // fill answer
+          _showConversion(data.currency, data.amount);
+        case 'history': // need to fill history
+          //TODO fill history
+          _showHistory(data.stack);
+          break;
+        case 'reset':
+          break;
+      }
     } else {
       // error handling
     }
@@ -85,12 +91,12 @@ function _handle(request) {
 
 /***********************************************************
  * Obtains an XML HTTP Request Object
- * 
+ *
  * @returns the XMLHttpRequest Object
  */
 async function _getRequest() {
   if (window.XMLHttpRequest) {
-    return new XMLHttpRequest();
+    return (new XMLHttpRequest());
   } else {
     return null;
   }
@@ -98,40 +104,41 @@ async function _getRequest() {
 
 /***********************************************************
  * Opens and sends a request to the server
- * 
+ *
  * @param {XMLHttpRequest} request the XML HTTP Request
  * @param {string} methodType the REST API method
  * @param {string} address the uri for the resource
  */
 function _openRequest(request, methodType, address) {
   request.open(methodType, address, true);
-  request.send(null);
+  request.send();
 }
 
 /***********************************************************
  * Handles changing the page display after a Pop request
- * 
+ *
  * @param {Array<Object>} stack the stack of commands
  */
 function _processPop(stack) {
-  //TODO
+  //TODO display stack
 }
 
 /***********************************************************
  * Handles displaying the result of a conversion to the
  * Single Page Application
- * 
+ *
  * @param {string} currency_type the currency type
  * @param {number} amount the converted amount
  */
-function _showConversion(currency_type, amount) {
-  //TODO
+function _showConversion(currency, amount) {
+  const result = document.getElementById('result');
+  result.innerHTML = `Currency value is: ${amount} in ${currency}`;
 }
 
 /***********************************************************
  * Handles displaying the history of commands for the
  * Single Page Application
- * 
+ *
  * @param {Array<Object>} stack the stack of commands
  */
 function _showHistory(stack) {
