@@ -39,6 +39,37 @@ const currencies = {
  * @param {string} methodType the REST API method type
  */
 function ajaxRequest(address, methodType, currency) {
+  const request = _getRequest(); // can return null
+  if (request) {
+    request.onreadystatechange = function () { _handle(request); };
+    const amt = Number(document.getElementById('amount').innerText);
+    if (!isNaN(amt)) {
+      if (
+        currency == currencies.EU ||
+        currency == currencies.UK ||
+        currency == currencies.US
+      ) {
+        address += `?currencies=?${currrency}&amount=${amt}`;
+      } else {
+        alert(`${currency} is not a supported currency`);
+      }
+    } else {
+      alert(`Please enter a number`);
+    }
+    request.open(methodType, address, true);
+    request.send(null);
+  } else {
+    console.error('Error: ajaxRequest could not obtain the XMLHttpRequest');
+  }
+}
+
+
+/***********************************************************
+ * Handles an XML HTTP Request on status change
+ * 
+ * @param {XMLHttpRequest} request the request
+ */
+function _handle(request) {
   //TODO
 }
 
