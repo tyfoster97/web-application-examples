@@ -1,4 +1,3 @@
-const { connect } = require('./db');
 const { Stack } = require('./stack');
 /*******************************************************************************
  * @file operation.js
