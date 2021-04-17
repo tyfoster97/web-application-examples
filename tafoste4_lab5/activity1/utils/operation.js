@@ -34,15 +34,6 @@ class Operation {
     this.agent = agent || 'unknown';
     this.ip = ip || 'unknown';
   }
-
-  /***********************************************************
-   * Converts an Operation to a String
-   *
-   * @param {Operation} op the operation object to convert
-   */
-  static toString(op) {
-    return `Operand: ${op.operand.amount} was converted from ${op.operand.type} to ${op.result.amount} ${op.result.type}, IP: ${op.ip}, User-Details: ${op.agent}`;
-  }
 }
 
 /***********************************************************
