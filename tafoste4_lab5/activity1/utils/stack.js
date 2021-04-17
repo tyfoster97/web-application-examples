@@ -57,6 +57,16 @@ StackSchema.methods.pop = async function () {
 };
 
 /***********************************************************
+ * Determines if the stack can be cleared
+ *
+ * @returns `true` if the stack can be cleared, `false`
+ * otherwise
+ */
+StackSchema.methods.canClear = async function () {
+  return this.size > 0;
+}
+
+/***********************************************************
  * Clears all the elements in the stack
  */
 StackSchema.methods.clear = async function () {

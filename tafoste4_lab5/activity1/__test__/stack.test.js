@@ -67,6 +67,19 @@ describe('Pop', () => {
   });
 });
 
+describe('canReset', () => {
+  test('empty stack', async () => {
+    const s = await Stack.findOne({size: 0});
+    expect(await s.canClear()).not.toBeTruthy();
+  });
+
+  test('populated stack', async () => {
+    const s = await Stack.findOne({size: 0});
+    await s.push({test: 'object'});
+    expect(await s.canClear()).toBeTruthy();
+  });
+})
+
 describe('Clear', () => {
   test('empty stack', async () => {
     const s = await Stack.findOne({size: 0});
