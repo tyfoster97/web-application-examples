@@ -102,7 +102,7 @@ function _openRequest(request, methodType, address) {
  * @param {Object} data the data from the response
  */
 function _processPop(data) {
-  const op = data.popped;
+  const op = data.popped || {};
   op.operand = op.operand || {amount: 0};
   op.result = op.result || {type: 'USD', amount: 0};
   document.getElementById('amount').value = op.operand.amount
@@ -141,7 +141,7 @@ function _showHistory(stack) {
     p.appendChild(document.createElement('br'));
   }
   section.appendChild(p);
-  if (stack === []) {
+  if (stack.length == 0) {
     _disableBtn('reset_btn', true);
   } else {
     _disableBtn('reset_btn', false); // enable button
