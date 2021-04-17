@@ -30,9 +30,16 @@ async function connect(path, name) {
 }
 
 /***********************************************************
- * Closes the default connection
+ * Closes the default collection
  */
 async function close() {
+  await mongoose.connection.close();
+}
+
+/***********************************************************
+ * Closes and deletes the default connection
+ */
+async function closeAndDelete() {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
 };
@@ -49,5 +56,6 @@ async function clean() {
 module.exports = {
   connect,
   clean,
-  close
+  close,
+  closeAndDelete
 };
