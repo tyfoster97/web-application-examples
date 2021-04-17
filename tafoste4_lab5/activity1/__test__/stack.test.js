@@ -1,4 +1,4 @@
-const { connect, close, clean } = require("../utils/db");
+const { connect, closeAndDelete, clean } = require("../utils/db");
 const { Stack } = require('../utils/stack');
 /*******************************************************************************
  * @file stack.test.js
@@ -25,7 +25,7 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
-  await close();
+  await closeAndDelete();
 });
 
 describe('Push', () => {

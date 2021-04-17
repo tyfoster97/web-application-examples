@@ -1,4 +1,6 @@
-const { Operation } = require('../utils/operation');
+const { connect, closeAndDelete } = require('../utils/db');
+const { Operation, pushToStack } = require('../utils/operation');
+const { Stack } = require('../utils/stack');
 /*******************************************************************************
  * @file operation.test.js
  * @version 2021.04.16
@@ -36,5 +38,19 @@ describe('To String', () => {
     expect(Operation.toString(op)).toEqual(
       'Operand: 0 was converted from USD to 0 USD, IP: unknown, User-Details: unknown'
     );
+  });
+});
+
+describe('Stack integration', () => {
+  test('Stack recieves object', async () => {
+    await connect(null, 'test-stack');
+    await new Stack({
+      size: 0,
+      stack: []
+    }).save();
+    await pushToStack();
+    const s = (await Stack.findOne()).toJSON();
+    expect(s.stack[0]).toBeTruthy();
+    await closeAndDelete();
   });
 });
