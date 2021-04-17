@@ -9,22 +9,6 @@
  */
 
 /*****************************
- * Currency constants
- *
- * @property {string} EU
- * corresponds to EURO
- * @property {string} UK
- * corresponds to POUND
- * @property {string} US
- * corresponds to USD
- */
-const currencies = {
-  EU: 'EURO',
-  UK: 'POUND',
-  US: 'USD'
-};
-
-/*****************************
  * REST API method constants
  */
  const methods = {
@@ -37,9 +21,8 @@ const currencies = {
  *
  * @param {string} address the address for the HTTP request
  * @param {string} methodType the REST API method type
- * @param {string} currency (Optional) the currency type
  */
-async function ajaxRequest(address, methodType, currency) {
+async function ajaxRequest(address, methodType) {
   const request = await _getRequest(); // can return null
   if (request) {
     request.onreadystatechange = function () { _handle(request); };
@@ -65,7 +48,6 @@ async function ajaxRequest(address, methodType, currency) {
  * @param {XMLHttpRequest} request the request
  */
 async function _handle(request) {
-  //TODO
   if (request.readyState == 4) {
     if (request.status == 200) {
       const data = JSON.parse(request.responseText);
@@ -84,11 +66,10 @@ async function _handle(request) {
           break;
       }
     } else {
-      // error handling
+      console.log(`status: ${request.status}`)
     }
   }
 }
-
 
 /***********************************************************
  * Obtains an XML HTTP Request Object
@@ -121,7 +102,12 @@ function _openRequest(request, methodType, address) {
  * @param {Object} data the data from the response
  */
 function _processPop(data) {
-  //TODO display stack
+  const op = data.popped;
+  op.operand = op.operand || {amount: 0};
+  op.result = op.result || {type: 'USD', amount: 0};
+  document.getElementById('amount').value = op.operand.amount
+  _showConversion(op.result.type, op.result.amount);
+  _showHistory(data.stack);
 }
 
 /***********************************************************
@@ -155,4 +141,9 @@ function _showHistory(stack) {
     p.appendChild(document.createElement('br'));
   }
   section.appendChild(p);
+  if (stack === []) {
+    _disableBtn('reset_btn', true);
+  } else {
+    _disableBtn('reset_btn', false); // enable button
+  }
 }
