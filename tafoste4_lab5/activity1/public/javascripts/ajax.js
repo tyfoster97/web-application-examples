@@ -70,16 +70,17 @@ async function _handle(request) {
     if (request.status == 200) {
       const data = JSON.parse(request.responseText);
       switch(data.op) {
-        case 'pop': // need to fill answer and history
-        case 'euro': // see above
+        case 'euro': // same response as euro
         case 'pound': // see above
           // fill answer
           _showConversion(data.currency, data.amount);
         case 'history': // need to fill history
-          //TODO fill history
+          // fill history
           _showHistory(data.stack);
           break;
+        case 'pop': // same response as reset
         case 'reset':
+          _processPop(data);
           break;
       }
     } else {
@@ -117,9 +118,9 @@ function _openRequest(request, methodType, address) {
 /***********************************************************
  * Handles changing the page display after a Pop request
  *
- * @param {Array<Object>} stack the stack of commands
+ * @param {Object} data the data from the response
  */
-function _processPop(stack) {
+function _processPop(data) {
   //TODO display stack
 }
 
@@ -142,5 +143,16 @@ function _showConversion(currency, amount) {
  * @param {Array<Object>} stack the stack of commands
  */
 function _showHistory(stack) {
-  //TODO
+  const section = document.getElementById('history');
+  if (section.hasChildNodes()) {
+    section.removeChild(document.getElementById('stack'));
+  }
+  const p = document.createElement('p');
+  p.id = 'stack';
+  for (item of stack) {
+    const text = document.createTextNode(_opToString(item));
+    p.appendChild(text);
+    p.appendChild(document.createElement('br'));
+  }
+  section.appendChild(p);
 }
