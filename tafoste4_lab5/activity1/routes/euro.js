@@ -1,6 +1,7 @@
 var express = require('express');
 const { connect, close } = require('../utils/db');
 const { pushToStack } = require('../utils/operation');
+const { Stack } = require('../utils/stack');
 var router = express.Router();
 const conversion = 0.9;
 
