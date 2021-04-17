@@ -1,18 +1,28 @@
 var express = require('express');
+const { connect, close } = require('../utils/db');
+const { pushToStack } = require('../utils/operation');
 var router = express.Router();
 const conversion = 0.9;
 
 /* POST conversion */
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
   const amt = req.query.amount * conversion;
-  //TODO push op to stack
+  // push op to stack
+  await connect();
+  await pushToStack(
+    req.query.amount,
+    amt, 'EURO',
+    req.headers['user-agent'],
+    req.headers.host
+  );
   const msg = JSON.stringify(
     {
       op: 'euro',
       currency: 'EURO',
       amount: amt,
-      stack: [] //FIX get stack
+      stack: (await Stack.findOne()).toJSON().stack
     });
+  await close();
   res.header('Content-Type', 'application/json; charset=utf-8');
   res.send(msg);
 });
