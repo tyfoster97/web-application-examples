@@ -32,16 +32,15 @@ describe('Constructor', () => {
   });
 });
 
-describe('To String', () => {
-  test('null parameters', () => {
-    const op = new Operation();
-    expect(Operation.toString(op)).toEqual(
-      'Operand: 0 was converted from USD to 0 USD, IP: unknown, User-Details: unknown'
-    );
-  });
-});
-
 describe('Stack integration', () => {
+  test('no stack in database', async () => {
+    await connect(null, 'test-stack');
+    await pushToStack();
+    const s = (await Stack.findOne()).toJSON();
+    expect(s.stack[0]).toBeTruthy();
+    await closeAndDelete();
+  });
+
   test('Stack recieves object', async () => {
     await connect(null, 'test-stack');
     await new Stack({
