@@ -58,3 +58,12 @@ function setup() {
 function _disableBtn(id, disabled) {
   document.getElementById(id).disabled = disabled;
 }
+
+/***********************************************************
+   * Converts an Operation to a String
+   *
+   * @param {Operation} op the operation object to convert
+   */
+function _opToString(op) {
+  return `Operand: ${op.operand.amount} was converted from ${op.operand.type} to ${op.result.amount} ${op.result.type}, IP: ${op.ip}, User-Details: ${op.agent}`;
+}
