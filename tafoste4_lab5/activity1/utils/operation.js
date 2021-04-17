@@ -53,7 +53,8 @@ async function pushToStack(in_amt, out_amt, out_currency, agent, ip) {
   const operand = new Currency(in_amt, 'USD');
   const result = new Currency(out_amt, out_currency);
   const op = new Operation(operand, result, agent, ip);
-  const s = (await Stack.findOne()); // one stack element in database
+  let s = (await Stack.findOne()); // one stack element in database
+  if (!s) s = new Stack({size: 0, stack: []});
   await s.push(op);
 }
 
