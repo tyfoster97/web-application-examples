@@ -36,18 +36,17 @@ function setup() {
   // Pop button
   const pop_btn = document.getElementById('pop_btn');
   pop_btn.addEventListener('click', async function () {
-    await ajaxRequest('/pop', methods.GET, currencies.EU);
+    await ajaxRequest('/pop', methods.GET);
   });
   // Reset button
   const reset_btn = document.getElementById('reset_btn');
-  reset_btn.disabled = true; //FIX enable when stack has elements
   reset_btn.addEventListener('click', async function () {
-    await ajaxRequest('/reset', methods.GET, currencies.EU);
+    await ajaxRequest('/reset', methods.GET);
   });
   // History button
   const history_btn = document.getElementById('history_btn');
   history_btn.addEventListener('click', async function () {
-    await ajaxRequest('/history', methods.GET, currencies.EU);
+    await ajaxRequest('/history', methods.GET);
   });
 }
 
