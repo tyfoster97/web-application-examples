@@ -1,5 +1,5 @@
 const { connection } = require("mongoose");
-const { connect } = require("../utils/db");
+const { connect, close } = require("../utils/db");
 /*******************************************************************************
  * @file db.test.js
  * @version 2021.04.16
