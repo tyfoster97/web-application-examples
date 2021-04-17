@@ -9,6 +9,12 @@ const mongoose = require('mongoose');
  * Contains functions for interacting with a database
  */
 
+const DBINFO = {
+  host: 'localhost',
+  port: '27017',
+  name: 'cc-history'
+};
+
 /***********************************************************
  * Connects to the specified database
  *
@@ -22,8 +28,8 @@ async function connect(path, name) {
     useUnifiedTopology: true,
     useCreateIndex: true
   };
-  path = path || 'mongodb://localhost:27017';
-  name = name || 'test';
+  path = path || `mongodb://${DBINFO.host}:${DBINFO.port}`;
+  name = name || `${DBINFO.name}`;
   uri = `${path}/${name}?retryWrites=true&w=majority`;
 
   await mongoose.connect(uri, options);

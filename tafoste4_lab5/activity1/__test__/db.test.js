@@ -11,7 +11,7 @@ const { connect, close } = require("../utils/db");
 describe('Connect to database', () => {
   test('no parameters passed', async () => {
     await connect();
-    expect(connection.db.databaseName).toEqual('test');
+    expect(connection.db.databaseName).toEqual('cc-history');
     expect(connection.host).toEqual('localhost');
     expect(connection.port).toEqual(27017);
     await close();
