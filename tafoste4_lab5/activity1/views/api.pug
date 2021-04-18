@@ -1,0 +1,70 @@
+extends layout
+
+block content
+  h1 Currency Converter API
+  section.wrap
+    span.method.post POST
+    span.route /euro?amount={usd}
+    span.desc Converts an amount in USD to EURO
+    section.info
+      label Parameters
+      section.param
+        span.param amount
+        span.desc the amount to convert
+      label Responses
+      section.param
+        span.param success
+        span.param (200)
+        span.desc { op: 'euro', currency: 'EURO', amount: {amount}, stack: {stack} }
+      section.param
+        span.param invalid amount
+        span.param (400)
+        span.desc { "error": {amount} is not a number }
+  section.wrap
+    span.method.get GET
+    span.route /history
+    span.desc Shows the history of conversion requests
+    section.info
+      label Responses
+      section.param
+        span.param success
+        span.param (200)
+        span.desc { op: 'history', stack: {stack} }
+  section.wrap
+    span.method.get GET
+    span.route /pop
+    span.desc Undoes the last conversion request
+    section.info
+      label Responses
+      section.param
+        span.param success
+        span.param (200)
+        span.desc { op: 'pop', popped: {operation}, stack: {stack} }
+  section.wrap
+    span.method.post POST
+    span.route /pound?amount={usd}
+    span.desc Converts an amount in USD to POUND
+    section.info
+      label Parameters
+      section.param
+        span.param amount
+        span.desc the amount to convert
+      label Responses
+      section.param
+        span.param success
+        span.param (200)
+        span.desc { op: 'pound', currency: 'POUND', amount: {amount}, stack: {stack} }
+      section.param
+        span.param invalid amount
+        span.param (400)
+        span.desc { "error": {amount} is not a number }
+  section.wrap
+    span.method.get GET
+    span.route /reset
+    span.desc Resets the application to the default state
+    section.info
+      label Responses
+      section.param
+        span.param success
+        span.param (200)
+        span.desc { op: 'reset', stack: [] }
