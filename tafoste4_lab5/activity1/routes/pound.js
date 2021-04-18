@@ -7,6 +7,11 @@ const conversion = 0.78;
 
 /* POST conversion. */
 router.post('/', async function(req, res, next) {
+  res.header('Content-Type', 'application/json; charset=utf-8');
+  if (isNaN(req.query.amount)) {
+    res.status(400);
+    res.send(`{ "error": ${req.query.amount} is not a number }`);
+  }
   const amt = req.query.amount * conversion; // perform
   // push to stack
   await connect();
@@ -24,7 +29,6 @@ router.post('/', async function(req, res, next) {
       stack: (await Stack.findOne()).toJSON().stack
     });
   await close();
-  res.header('Content-Type', 'application/json; charset=utf-8');
   res.send(msg);
 });
 

@@ -14,3 +14,51 @@ section {
 #euro_btn, #pound_btn, #pop_btn, #reset_btn {
   margin-right: 5px;
 }
+
+section.wrap {
+  border: 2px solid black;
+  padding: 15px 10px 15px 10px;
+  border-radius: 5px;
+}
+
+section.info {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+section.param {
+  margin-left: 10px;
+  margin-top: 0px;
+}
+
+span.param {
+  margin-right: 10px;
+}
+
+span.method {
+  padding: 5px;
+  border-radius: 10%;
+  margin-right: 5px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+span.post {
+  background-color: aquamarine;
+}
+
+span.get {
+  background-color: aqua;
+}
+
+span.route {
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+span.desc {
+  font-size: 12px;
+  font-weight: normal;
+  color: gray;
+}

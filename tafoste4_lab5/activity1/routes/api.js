@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET api for server. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('api');
 });
 
 module.exports = router;
