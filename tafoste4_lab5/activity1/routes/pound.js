@@ -1,6 +1,7 @@
 var express = require('express');
 const { connect, close } = require('../utils/db');
 const { pushToStack } = require('../utils/operation');
+const { httpErr } = require('../utils/util');
 const { Stack } = require('../utils/stack');
 var router = express.Router();
 const conversion = 0.78;
@@ -30,6 +31,10 @@ router.post('/', async function(req, res, next) {
     });
   await close();
   res.send(msg);
+});
+
+router.all('/', function(req, res, next) {
+  httpErr(405, req, res, next);
 });
 
 module.exports = router;
