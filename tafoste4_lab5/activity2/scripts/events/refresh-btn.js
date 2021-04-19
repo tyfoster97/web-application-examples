@@ -12,8 +12,7 @@
  * Handles refresh button select
  */
 function handleRefreshBtn() {
-  document.getElementById('average-issues').innerHTML = '';
-  document.getElementById('most-issues').innerHTML = '';
+  document.getElementById('issues').innerHTML = '';
   document.getElementById('table').innerHTML = '';
   document.getElementById('controls').innerHTML = '';
   document.getElementById('branch-info').innerHTML = '';
