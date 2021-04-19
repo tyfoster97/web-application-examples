@@ -20,3 +20,9 @@ async function getRepos(uname) {
   const data = await resp.json();
   return data;
 }
+
+async function getBranches(uname, repoName) {
+  const resp = await fetch(`https://api.github.com/repos/${uname}/${repoName}/branches`);
+  const data = await resp.json();
+  return data;
+}
