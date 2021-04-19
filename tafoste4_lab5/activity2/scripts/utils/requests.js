@@ -21,6 +21,14 @@ async function getRepos(uname) {
   return data;
 }
 
+/**
+ * Gets branch data for the repo
+ *
+ * @param {string} uname GitHub username
+ * @param {string} repoName user repo
+ * @returns {Array<Object>} the collection of all branches
+ * for the repo
+ */
 async function getBranches(uname, repoName) {
   const resp = await fetch(`https://api.github.com/repos/${uname}/${repoName}/branches`);
   const data = await resp.json();
