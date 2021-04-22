@@ -1,7 +1,6 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { KeyValueList } from "../../src/components";
-import userEvent from "@testing-library/user-event";
 
 describe('<KeyValueList />', () => {
   it('should render', () => {
