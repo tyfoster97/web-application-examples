@@ -1,0 +1,4 @@
+```jsx
+
+<Image imageUrl={url}/>
+```
