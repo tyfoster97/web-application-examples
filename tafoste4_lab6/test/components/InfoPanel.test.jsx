@@ -18,5 +18,7 @@ describe('<InfoPanel />', () => {
     expect(screen.getByRole('pairwrapper')).toBeInTheDocument();
     expect(screen.getByRole('key')).toBeInTheDocument();
     expect(screen.getByRole('value')).toBeInTheDocument();
+    expect(screen.getByText('foo')).toBeInTheDocument();
+    expect(screen.getByText('bar')).toBeInTheDocument();
   });
 });
