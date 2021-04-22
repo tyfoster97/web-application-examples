@@ -10,7 +10,12 @@ describe('<Checkbox />', () => {
   });
 
   it('should render a given label', () => {
-    render(<Checkbox label="Hello There" />);
-    expect(screen.getByText('Hello There')).toBeInTheDocument();
-  })
+    render(<Checkbox label="This is a label" />);
+    expect(screen.getByText('This is a label')).toBeInTheDocument();
+  });
+
+  it('should be checked', () => {
+    render(<Checkbox checked={true} />);
+    expect(screen.getByRole('checkbox')).toBeChecked();
+  });
 });

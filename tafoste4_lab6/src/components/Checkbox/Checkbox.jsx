@@ -5,6 +5,8 @@ export const Checkbox = (props) => {
   return <label>
     <input
       type="checkbox"
+      label={props.label}
+      checked={!!props.checked}
       />
     {props.label}
   </label>;
