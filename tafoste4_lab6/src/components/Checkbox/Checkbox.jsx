@@ -8,7 +8,8 @@ export const Checkbox = (props) => {
       label={props.label}
       checked={!!props.checked}
       disabled={!!props.disabled}
-      onChange={(e) => props.onChange && props.onChange(e.target.value)}
+      onChange={(e) => props.onChange && props.onChange(e.target)}
+      onFocus={(e) => props.onFocus && props.onFocus(e.target)}
       />
     {props.label}
   </label>;

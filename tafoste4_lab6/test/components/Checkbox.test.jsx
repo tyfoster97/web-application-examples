@@ -34,7 +34,7 @@ describe('<Checkbox />', () => {
   it('should use callback on focus', () => {
     const cb = jest.fn();
     render(<Checkbox onFocus={cb} />);
-    act(() => fireEvent.focus(screen.getByRole('checkbox')));
+    fireEvent.focus(screen.getByRole('checkbox'));
     expect(cb).toHaveBeenCalled();
   });
 });
