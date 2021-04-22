@@ -1,4 +1,4 @@
 ```jsx
 
-<Image imageUrl={url}/>
+<Image imageUrl='http://example.com'/>
 ```
