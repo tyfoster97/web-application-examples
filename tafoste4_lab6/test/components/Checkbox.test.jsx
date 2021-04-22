@@ -18,4 +18,9 @@ describe('<Checkbox />', () => {
     render(<Checkbox checked={true} />);
     expect(screen.getByRole('checkbox')).toBeChecked();
   });
+
+  it('should be disabled', () => {
+    render(<Checkbox disabled={true} />);
+    expect(screen.getByRole('checkbox')).toBeDisabled();
+  });
 });

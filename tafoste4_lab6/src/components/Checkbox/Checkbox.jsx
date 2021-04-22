@@ -7,6 +7,7 @@ export const Checkbox = (props) => {
       type="checkbox"
       label={props.label}
       checked={!!props.checked}
+      disabled={!!props.disabled}
       />
     {props.label}
   </label>;
