@@ -8,4 +8,9 @@ describe('<Checkbox />', () => {
     render(<Checkbox />);
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
   });
+
+  it('should render a given label', () => {
+    render(<Checkbox label="Hello There" />);
+    expect(screen.getByText('Hello There')).toBeInTheDocument();
+  })
 });
