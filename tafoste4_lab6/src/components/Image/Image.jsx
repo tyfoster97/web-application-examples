@@ -1,16 +1,14 @@
-import React from  'react';
+import React from 'react';
 import styled from 'styled-components';
 
 export const Image = (props) => {
   const img = (props.imageUrl && props.imageUrl.length > 0) ?
-    <Wrapper role='wrapper'>
-      <Img role='image' imageurl={props.imageUrl} ></Img>
-    </Wrapper>
+    <Img role='image' imageurl={props.imageUrl} ></Img>
     :
-    <Wrapper role='wrapper'>
-      <NoImage role='noimage'>Fetch a new image →</NoImage>
-    </Wrapper>;
-  return img;
+    <NoImage role='noimage'>Fetch a new image →</NoImage>
+  return <Wrapper role='wrapper'>
+    {img}
+  </Wrapper>;
 };
 
 Image.defaultProps = {
