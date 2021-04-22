@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
-export const KeyValueList = () => {
-  return <Wrapper role='wrapper'>
-    <PairWrapper role='pairwrapper'>
-      <Key role='key'></Key><Value role='value'></Value>
-    </PairWrapper>
-  </Wrapper>
+export const KeyValueList = (props) => {
+  const items = useMemo(() => {
+    return props.items.map((item, index) => {
+      const keys = Object.keys(item);
+      if (keys.length > 0) {
+        return <PairWrapper role='pairwrapper' key={`key-value-list-item-${index}`}>
+          <Key role='key'>{keys[0]}</Key>
+          <Value role='value'>{item[keys[0]]}</Value>
+        </PairWrapper>;
+      }
+    });
+  }, [props.items]);
+
+  return <Wrapper role='wrapper'>{items}</Wrapper>;
 };
 
 KeyValueList.defaultProps = {
-
+  items: []
 }
 
 const Wrapper = styled.div`
