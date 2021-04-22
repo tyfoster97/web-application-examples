@@ -23,4 +23,11 @@ describe('<Checkbox />', () => {
     render(<Checkbox disabled={true} />);
     expect(screen.getByRole('checkbox')).toBeDisabled();
   });
+
+  it('should use callback on change', () => {
+    const cb = jest.fn();
+    render(<Checkbox onChange={cb} />);
+    act(() => userEvent.click(screen.getByRole('checkbox'))); // simulates change event
+    expect(cb).toHaveBeenCalled();
+  })
 });
