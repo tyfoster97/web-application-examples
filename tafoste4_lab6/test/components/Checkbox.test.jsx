@@ -29,5 +29,12 @@ describe('<Checkbox />', () => {
     render(<Checkbox onChange={cb} />);
     act(() => userEvent.click(screen.getByRole('checkbox'))); // simulates change event
     expect(cb).toHaveBeenCalled();
-  })
+  });
+
+  it('should use callback on focus', () => {
+    const cb = jest.fn();
+    render(<Checkbox onFocus={cb} />);
+    act(() => fireEvent.focus(screen.getByRole('checkbox')));
+    expect(cb).toHaveBeenCalled();
+  });
 });
