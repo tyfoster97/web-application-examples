@@ -1,5 +1,7 @@
-# SER421Lab6
-Lab 6 skeleton code
+# Lab 6
+Lab 6 submission
+
+API keys are stored in data/keys.js
 
 ## DO THIS FIRST!!!
 Install node modules by running the following command:
