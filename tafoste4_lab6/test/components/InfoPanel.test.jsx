@@ -36,6 +36,7 @@ describe('<InfoPanel />', () => {
       height: 50%;
       justify-content: flex-end;
       display: flex;
+      flex-direction: column;
     `);
     expect(screen.getByRole('wrapper')).toHaveStyle(`
       height: 52%;

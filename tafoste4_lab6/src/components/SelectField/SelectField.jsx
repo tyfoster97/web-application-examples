@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const SelectField = (props) => {
   const options = useMemo(() => {
     return props.options.map((option, index) => {
-      return <Option role='option' key={`${props.label}select-field${index}`} value={option}>{option}</Option>;
+      return <Option role='option' key={`${props.label}select-field${index}`} {...option}>{option.label}</Option>;
     });
   }, [props.options, props.selectedOption]);
 
@@ -12,17 +12,18 @@ export const SelectField = (props) => {
     const value = { value: e.target.value, label: e.target.value};
     props.onChange(value);
   }
-  return <Label role='label'>
+  return (<Label role='label'>
     {props.label}
     <Select
       role='select'
       disabled={!!props.disabled}
       placeholder={props.placeholder}
       onChange={(e) => props.onChange && handleOnChange(e)}
+      selectedOption={props.selectedOption}
     >
       {options}
     </Select>
-  </Label>;
+  </Label>);
 };
 
 SelectField.defaultProps = {

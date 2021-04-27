@@ -2,17 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const Image = (props) => {
-  const img = (props.imageUrl && props.imageUrl.length > 0) ?
+  return (<Wrapper role='wrapper'>
+    {(props.imageUrl && props.imageUrl.length > 0) ?
     <Img role='image' imageurl={props.imageUrl} ></Img>
     :
-    <NoImage role='noimage'>Fetch a new image →</NoImage>
-  return <Wrapper role='wrapper'>
-    {img}
-  </Wrapper>;
+    <NoImage role='noimage'>Fetch a new image →</NoImage>}
+  </Wrapper>);
 };
 
 Image.defaultProps = {
-  imageUrl: null
+  imageUrl: ''
 }
 
 const Wrapper = styled.div`
@@ -28,7 +27,7 @@ const Wrapper = styled.div`
 `;
 
 const Img = styled.div`
-  background-image: url(${props => props.imageUrl});
+  background-image: url('${props => props.imageUrl}');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;

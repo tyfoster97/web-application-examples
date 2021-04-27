@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const Checkbox = (props) => {
-  return <Label checked={!!props.checked} isDisabled={!!props.disabled}>
+  return (<Label checked={!!props.checked} isDisabled={!!props.disabled}>
     <Input
       type="checkbox"
       label={props.label}
@@ -13,7 +13,7 @@ export const Checkbox = (props) => {
       onBlur={(e) => props.onBlur && props.onBlur(e.target)}
       />
     {props.label}
-  </Label>;
+  </Label>);
 };
 
 Checkbox.defaultProps = {

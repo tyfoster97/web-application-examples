@@ -14,7 +14,7 @@ export const KeyValueList = (props) => {
     });
   }, [props.items]);
 
-  return <Wrapper role='wrapper'>{items}</Wrapper>;
+  return (<Wrapper role='wrapper'>{items}</Wrapper>);
 };
 
 KeyValueList.defaultProps = {

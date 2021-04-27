@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { SelectField } from "../../src/components";
+import userEvent from '@testing-library/user-event';
 
 describe('<SelectField />', () => {
   it('should render', () => {
@@ -25,7 +26,7 @@ describe('<SelectField />', () => {
 
   it('should render options', () => {
     const opts = [
-      'foo'
+      {value: 'foo', label: 'foo'}
     ];
     render(<SelectField options={opts} />);
     expect(screen.getByRole('option')).toBeInTheDocument();
@@ -34,8 +35,8 @@ describe('<SelectField />', () => {
   it('should call callback on change', async () => {
     const cb = jest.fn();
     const opts = [
-      'foo',
-      'bar'
+      {value: 'foo', label: 'foo'},
+      {value: 'bar', label: 'bar'}
     ];
     render(<SelectField options={opts} onChange={cb}/>);
     fireEvent.change(screen.getByRole('select'));
@@ -44,7 +45,7 @@ describe('<SelectField />', () => {
 
   it('should render with style', () => {
     const opts = [
-      'foo'
+      {value: 'foo', label: 'foo'}
     ];
     render(<SelectField options={opts} />);
     expect(screen.getByRole('select')).toHaveStyle(`

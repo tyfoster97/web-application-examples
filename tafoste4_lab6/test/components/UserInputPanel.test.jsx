@@ -10,7 +10,7 @@ describe('<UserInputPanel />', () => {
     expect(screen.getByRole('breedselectwrapper')).toBeInTheDocument();
     expect(screen.getByRole('buttonwrapper')).toBeInTheDocument();
     expect(screen.getByRole('select')).toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByText('Get image')).toBeInTheDocument();
     expect(screen.getByLabelText('Get by breed')).toBeInTheDocument();
     expect(screen.getByLabelText('Get animated .gif')).toBeInTheDocument();
   });
@@ -30,7 +30,7 @@ describe('<UserInputPanel />', () => {
 
   it('should render breeds', () => {
     const breeds = [
-      'labradoodle'
+      { label: 'labradoodle', value: 'labradoodle' }
     ];
     render(<UserInputPanel breeds={breeds} />);
     expect(screen.getByRole('option')).toBeInTheDocument();

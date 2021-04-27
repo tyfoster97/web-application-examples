@@ -4,19 +4,19 @@ import { Button, Checkbox, SelectField } from '../index';
 
 export const UserInputPanel = (props) => {
   // setup sub-components
-  const breed = <Checkbox
+  const breed = (<Checkbox
     label='Get by breed'
     onChange={e => props.onBreedCheckboxChange && props.onBreedCheckboxChange(e)}
     checked={props.useBreedSelection}
     disabled={props.animated}
-  />;
-  const gif = <Checkbox
+  />);
+  const gif = (<Checkbox
     label='Get animated .gif'
     onChange={e => props.onGifChange && props.onGifChange(e)}
     checked={props.animated}
     disabled={props.useBreedSelection}
-  />;
-  const breedWrapper = <BreedSelectionWrapper role='breedselectwrapper'>
+  />);
+  const breedWrapper = (<BreedSelectionWrapper role='breedselectwrapper'>
     {breed}
     <SelectField
       options={props.breeds}
@@ -24,20 +24,20 @@ export const UserInputPanel = (props) => {
       selectedOption={props.selectedBreed}
       disabled={!props.useBreedSelection}
     />
-  </BreedSelectionWrapper>;
-  const buttonWrapper = <ButtonWrapper role='buttonwrapper'>
+  </BreedSelectionWrapper>);
+  const buttonWrapper = (<ButtonWrapper role='buttonwrapper'>
     <Button
       value='Get image'
-      onClick={e => props.onFetchClick && props.onFetchClick(e)}
+      onClick={e => props.onFetchClick && props.onFetchClick()}
     />
-  </ButtonWrapper>;
-  return <NavigationWrapper
+  </ButtonWrapper>);
+  return (<NavigationWrapper
     role='inputpanel'
   >
     {breedWrapper}
     {gif}
     {buttonWrapper}
-  </NavigationWrapper>;
+  </NavigationWrapper>);
 };
 
 UserInputPanel.defaultProps = {

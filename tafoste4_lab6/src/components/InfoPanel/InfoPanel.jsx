@@ -4,11 +4,11 @@ import { KeyValueList } from '../index';
 
 export const InfoPanel = (props) => {
   const child = (props.stats) ? <KeyValueList items={props.stats} /> : <NoInfoWrapper role='wrapper' children={<NoInfo role='noinfo'>No Info</NoInfo>}/>;
-  return <StatsWrapper
+  return (<StatsWrapper
     role='infopanel'
     stats={props.stats}
     children={child}
-  />;
+  />);
 }
 
 InfoPanel.defaultProps = {
@@ -20,6 +20,7 @@ const StatsWrapper = styled.div`
   height: 50%;
   justify-content: flex-end;
   display: flex;
+  flex-direction: column;
 `;
 
 const NoInfoWrapper = styled.div`

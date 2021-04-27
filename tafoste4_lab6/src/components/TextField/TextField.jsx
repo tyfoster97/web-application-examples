@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const TextField = (props) => {
-    return <label>
+    return (<label>
         {props.label}
         <Input
             value={props.value}
             onChange={(e) => props.onChange && props.onChange(e.target.value)}
             hasLabel={!!props.label}
         />
-    </label>;
+    </label>);
 };
 
 TextField.defaultProps = {
@@ -31,7 +31,7 @@ const Input = styled.input`
     padding: 0 8px;
     display: block;
     ${props => props.hasLabel && 'margin-top: 3px;'}
-    
+
     &:focus {
         outline: 0;
         box-shadow: 0 0 5px 3px #cce0ff;

@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const Button = (props) => {
-  return <Btn
+  return (<Btn
       value={props.value}
       onClick={(e) => props.onClick && props.onClick(e.target)}
-    />;
+    >{props.value}</Btn>);
 };
 
 Button.defaultProps = {
