@@ -9,7 +9,7 @@ export const SelectField = (props) => {
   }, [props.options, props.selectedOption]);
 
   const handleOnChange = e => {
-    const breed = Objct.value(props.options).fin(animalBreed => {
+    const breed = Object.values(props.options).fin(animalBreed => {
       animalBreed.value === e.target.value
     });
     const breedId = breed && breed.id;
