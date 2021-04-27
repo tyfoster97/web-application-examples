@@ -4,16 +4,16 @@ import styled from 'styled-components';
 export const SelectField = (props) => {
   const options = useMemo(() => {
     return props.options.map((option, index) => {
-      return <Option role='option' key={`${props.label}select-field${index}`} {...option}>{option.label}</Option>;
+      return <Option role='option' key={`${props.label}select-field-${index}`} value={option.value} children={option.label}/>;
     });
   }, [props.options, props.selectedOption]);
 
   const handleOnChange = e => {
-    const breed = Object.values(props.options).fin(animalBreed => {
+    const breed = Object.values(props.options).find(animalBreed =>
       animalBreed.value === e.target.value
-    });
+    );
     const breedId = breed && breed.id;
-    const value = { value: e.target.value, label: e.target.value};
+    const value = { value: e.target.value, label: e.target.value, id: breedId};
     props.onChange(value);
   }
   return (<Label role='label'>

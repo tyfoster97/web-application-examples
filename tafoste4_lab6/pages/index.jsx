@@ -5,24 +5,22 @@ import { Image, InfoPanel, UserInputPanel } from '../src/components';
 import { DOG_API_KEY } from '../data/keys';
 
 const Index = () => {
-  const { fetchImage, apiUrl, breeds } = useApi(DOG_API_TYPE, process.env.DOG_API_KEY || DOG_API_KEY);
+  const { fetchImage, apiUrl, breeds } = useApi(DOG_API_TYPE, DOG_API_KEY);
 
   const [selectedBreed, setSelectedBreed] = useState({});
   const [useBreedSelection, setUseBreedSelection] = useState(false);
   const [animated, setAnimated] = useState(false);
   const [image, setImage] = useState();
   const [stats, setStats] = useState();
-  console.log(breeds[0]);
 
   const onFetchClick = async () => {
     const breed = useBreedSelection && selectedBreed.id;
     const { imageUrl, breedStats } = await fetchImage(
       breed,
       animated,
-      process.env.DOG_API_KEY || DOG_API_KEY,
+      DOG_API_KEY,
       apiUrl
     );
-    console.log(imageUrl);
     setImage(imageUrl);
     setStats(breedStats);
   };

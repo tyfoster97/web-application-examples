@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Image = (props) => {
   return (<Wrapper role='wrapper'>
     {(props.imageUrl && props.imageUrl.length > 0) ?
-    <Img role='image' imageurl={props.imageUrl} ></Img>
+    <Img role='image' src={props.imageUrl} imageurl={props.imageUrl} ></Img>
     :
     <NoImage role='noimage'>Fetch a new image →</NoImage>}
   </Wrapper>);
@@ -26,8 +26,8 @@ const Wrapper = styled.div`
   border-radius: 6px;
 `;
 
-const Img = styled.div`
-  background-image: url('${props => props.imageUrl}');
+const Img = styled.img`
+  background-image: url("${props => props.imageUrl}");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
