@@ -13,26 +13,32 @@
   </head>
 
   <body>
-    <section id='issues'>
-      <!-- placeholder for average repo issues message -->
-    </section>
-    <section id='uname-form'>
-      <!-- form for obtaining GitHub username -->
-      <label for='uname'>Enter a GitHub username: </label>
-      <input type='text' id='uname' name='uname' />
-      <button id='uname-btn' name='uname-btn'>Search</button>
-    </section>
-    <section id='information'>
-      <!-- results from search -->
-      <section id='table'>
-        <!-- placeholder for table -->
-      </section>
-      <section id='controls'>
-        <!-- placeholder for dropdown and refresh button -->
-      </section>
-      <section id='branch-info'>
-        <!-- placeholder for branches table -->
-      </section>
-    </section>
+    <div class='grid-container'>
+      <div id='issues' class='issues'>
+        <!-- placeholder -->
+      </div>
+      <!-- obtain GitHub username -->
+      <div class='user'>
+        <label for='uname'>Enter a GitHub username: </label>
+        <input type='text' id='uname' name='uname' />
+      </div>
+      <div class='search-btn'>
+        <button id='uname-btn' name='uname-btn'>Search</button>
+      </div>
+      <div class='gap1'></div>
+      <div id='table' class='table'>
+        <!--  placeholder -->
+      </div>
+      <div class='repos' id='repos'>
+        <!--  placeholder -->
+      </div>
+      <div class='refresh-btn' id='refresh-btn'>
+        <!--  placeholder -->
+      </div>
+      <div class='gap2'></div>
+      <div class='branch-table' id='branch-table'>
+        <!-- placeholder -->
+      </div>
+    </div>
   </body>
 </hmtl>

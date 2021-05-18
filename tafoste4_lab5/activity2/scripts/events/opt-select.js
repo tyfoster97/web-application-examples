@@ -31,13 +31,13 @@ function handleOptSelect(repoName) {
     if (opt_repo) repos.push(opt_repo);
     window.sessionStorage.setItem('opt-repo', JSON.stringify(repo));
     window.sessionStorage.setItem('repos', JSON.stringify(repos));
-    // display data in third row
+    // display data in sixth
     const repoData = _repoData(repo);
-    const tbl = document.getElementById('result-table');
+    const tbl = document.getElementById('repo-table');
     const tr = _tr(repoData, true);
     tr.id = 'opt-row';
     tbl.appendChild(tr);
     // update dropdown
-    _dropDown(repos);
+    _repoSelect(repos);
   }
 }

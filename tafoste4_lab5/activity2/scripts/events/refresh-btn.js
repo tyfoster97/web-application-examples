@@ -12,9 +12,5 @@
  * Handles refresh button select
  */
 function handleRefreshBtn() {
-  document.getElementById('issues').innerHTML = '';
-  document.getElementById('table').innerHTML = '';
-  document.getElementById('controls').innerHTML = '';
-  document.getElementById('branch-info').innerHTML = '';
-  setupTable();
+  renderTable();
 }

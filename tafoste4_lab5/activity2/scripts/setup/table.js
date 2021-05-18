@@ -8,29 +8,8 @@
  * This file contains methods to setup the table
  */
 
-/**
- * Sets up repo data table
- */
-function setupTable() {
-  // generate table and header row
-  document.getElementById('table').innerHTML = '';
-  const table = document.createElement('table');
-  table.id = 'result-table';
-  const names = [
-    'Repo name', 'Created At', 'Updated At', 'Size', 'Forks', 'HTML URL', 'Language', 'Language URL', 'Downloads', 'Branches'
-  ]
-  table.appendChild(_theader(names)); // appead header row
-  document.getElementById('table').appendChild(table);
-
-  // display data
-  _loadRepoData();
-}
-
-/**
- * Sets up and displays branch table
- */
-async function setupBranchTable(repoName) {
-  document.getElementById('branch-info').innerHTML = '';
+async function renderBranchTable() {
+  document.getElementById('branch-table').innerHTML = '';
   const table = document.createElement('table');
   const names = [
     'Branch name', 'Branch sha', 'Branch url', 'Branch protected'
@@ -40,7 +19,46 @@ async function setupBranchTable(repoName) {
   const data = await getBranches(user, repoName);
   // display data
   _loadBranchData(table, data);
-  document.getElementById('branch-info').appendChild(table);
+  document.getElementById('branch-table').appendChild(table);
+}
+
+function _repoTableHeader() {
+  const table = document.createElement('table');
+  table.id = 'repo-table';
+  const names = [
+    'Repo name', 'Created At', 'Updated At', 'Size', 'Forks', 'HTML URL', 'Language', 'Language URL', 'Branches'
+  ];
+  table.appendChild(_theader(names));
+  return table;
+}
+
+function _renderRepoHeader() {
+  if (document.getElementById('table').innerText !== '') {
+    document.getElementById('table').innerHTML = '';
+  }
+  const table = _repoTableHeader();
+  document.getElementById('table').appendChild(table);
+}
+
+async function renderTable() {
+  _renderRepoHeader();
+  // get data
+  const repoData = await getRepos(document.getElementById('uname').value);
+  // calulate averages and generate messages
+  _issueMessage(repoData);
+  for (let i = 0; i < 5; i++) {
+    const data = _repoData(repoData.pop());
+    document.getElementById('repo-table').appendChild(_tr(data, true));
+  }
+  _repoSelect(repoData);
+  _refreshBtn();
+}
+
+/**
+ * Sets up and displays branch table
+ */
+async function setupBranchTable(repoName) {
+  
 }
 
 /**
@@ -48,26 +66,32 @@ async function setupBranchTable(repoName) {
  *
  * @param {Object[]} repoData the unlisted repositories
  */
-function _dropDown(repoData) {
-  document.getElementById('controls').innerHTML = '';
+async function _repoSelect(repoData) {
+  //FIXME
+  document.getElementById('repos').innerText = ''; // erase previous list
+  // construct dropdown
   const dropdown = document.createElement('select');
   dropdown.id = 'dropdown';
-  const blank = document.createElement('option');
-  blank.value = ''; blank.innerHTML = 'Select repo';
-  dropdown.appendChild(blank);
+  // default selected option
+  const select = document.createElement('option');
+  select.value = ''; select.innerHTML = 'Select repo';
+  dropdown.appendChild(select);
+  // append repos as children
   for (let i = 0; i < repoData.length && i < 5; i++) {
     const opt = document.createElement('option');
     opt.value = repoData[i].name;
     opt.innerHTML = repoData[i].name;
     dropdown.appendChild(opt);
   }
+  // handle new selection
   dropdown.addEventListener('input', () => {
     const txt = dropdown.options[dropdown.selectedIndex].text;
     handleOptSelect(txt);
   });
-  window.sessionStorage.setItem('repos', JSON.stringify(repoData)); // for ease of access
-  document.getElementById('controls').appendChild(dropdown);
-  _refreshBtn();
+  // store data in session storage
+  window.sessionStorage.setItem('repos', JSON.stringify(repoData));
+  // add to document
+  document.getElementById('repos').appendChild(dropdown);
 }
 
 /**
@@ -88,34 +112,19 @@ function _loadBranchData(table, data) {
 }
 
 /**
- * Loads the repo data into the page
- */
-async function _loadRepoData() {
-  // get data
-  const repoData = await getRepos(document.getElementById('uname').value);
-  // calulate averages and generate messages
-  _issueMsgs(repoData);
-  // select 2 elements
-  const r1Data = _repoData(repoData.pop());
-  const r2Data = _repoData(repoData.pop());
-  // add data to table
-  document.getElementById('result-table').appendChild(_tr(r1Data, true));
-  document.getElementById('result-table').appendChild(_tr(r2Data, true));
-  // make dropdown and refresh button
-  _dropDown(repoData);
-}
-
-/**
  * Creates and adds the refresh button to the page
  */
 function _refreshBtn() {
+  if (document.getElementById('refresh-btn').innerText !== '') {
+    document.getElementById('refresh-btn').innerHTML = '';
+  }
   const btn = document.createElement('button');
   btn.addEventListener('click', () => {
     handleRefreshBtn();
   });
   btn.id = 'refresh'
   btn.innerHTML = 'Refresh';
-  document.getElementById('controls').appendChild(btn);
+  document.getElementById('refresh-btn').appendChild(btn);
 }
 
 /**
@@ -135,7 +144,6 @@ function _repoData(repo) {
   data.push(repo.html_url);
   data.push(repo.language);
   data.push(repo.languages_url);
-  data.push(repo.downloads_url || 'None');
   return data;
 }
 
@@ -159,7 +167,7 @@ function _th(name) {
  */
 function _theader(names) {
   const theader = document.createElement('tr');
-  for(const name of names) {
+  for (const name of names) {
     theader.appendChild(_th(name));
   }
   return theader;

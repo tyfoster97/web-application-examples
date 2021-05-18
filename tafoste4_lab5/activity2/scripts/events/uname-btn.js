@@ -12,7 +12,7 @@
 /**
  * Handles username button being selected
  */
-function handleUnameBtn() {
-  setupTable();
-  document.getElementById('branch-info').innerHTML = '';
+async function handleUnameBtn() {
+  renderTable();
+  document.getElementById('branch-table').innerHTML = ''; // clear branch info
 }

@@ -14,5 +14,5 @@
  * @param {string} repoName repository name
  */
 function handleBranchesBtn(repoName) {
-  setupBranchTable(repoName);
+  renderBranchTable(repoName);
 }

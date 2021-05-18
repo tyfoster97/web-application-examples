@@ -25,7 +25,7 @@ function setupPg() {
  *
  * @param {Array<Object>} data
  */
-function _issueMsgs(data) {
+function _issueMessage(data) {
   let sum = 0;
   let count = 0;
   let max = 0;

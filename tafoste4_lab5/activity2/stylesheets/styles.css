@@ -1,3 +1,29 @@
-table, th, td {
-  border: 1px solid black;
+table, th, td { border: 1px solid black;}
+
+.issues { grid-area: issues; }
+.gap1 { grid-area: gap1; }
+.gap2 { grid-area: gap2; }
+.refresh-btn { grid-area: refresh-btn; }
+.repos { grid-area: repo; }
+.search-btn { grid-area: search-btn; }
+.table { grid-area: table; }
+.user { grid-area: user; }
+.branch-table { grid-area: branch-table; }
+
+.grid-container {
+  max-width: 100%;
+  display: grid;
+  grid-template-areas: 
+    'issues issues issues issues issues issues'
+    'user user search-btn gap1 gap1 gap1'
+    'table table table table table table'
+    'repos repos refresh-btn gap2 gap2 gap2'
+    'branch-table branch-table branch-table branch-table branch-table branch-table';
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.grid-container > div {
+  padding: 30px;
+  text-align: center;
 }

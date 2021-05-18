@@ -1,10 +1,20 @@
-# Lab 6
-Lab 6 submission
+# React Application
+Copyright ASU 2021, All Rights Reserved
 
-API keys are stored in data/keys.js
+# Demonstrates
 
-## DO THIS FIRST!!!
-Install node modules by running the following command:
+## Test-Driven Development (TDD)
+
+## React
+
+## JavaScript
+
+# To Run
+
+## Install Node.js and Node Modules
+Node.js can be downloaded from your browser
+
+Install node modules by running the following command in the console:
 
 ```shell
 npm install
