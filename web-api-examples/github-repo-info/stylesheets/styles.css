@@ -1,0 +1,11 @@
+table, th, td { 
+  border: 1px solid black;
+}
+
+.user, .search-btn, .num-repos, .refresh-btn {
+  display: inline-block;
+}
+
+.wrapper > div {
+  padding: 5px;
+}

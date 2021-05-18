@@ -9,33 +9,37 @@
     <script src='scripts/events/uname-btn.js' type='text/javascript'></script>
     <script src='scripts/utils/requests.js' type='text/javascript'></script>
     <script src='scripts/setup/table.js' type='text/javascript'></script>
+    <script src='scripts/setup/repo-table.js' type='text/javascript'></script>
+    <script src='scripts/setup/branch-table.js' type='text/javascript'></script>
     <script src='scripts/setup/page.js' type='text/javascript' defer></script>
   </head>
 
   <body>
-    <div class='grid-container'>
+    <div class='wrapper'>
+      <!-- obtain GitHub username -->
+      <div class='wrapper'>
+        <div class='user'>
+          <label for='uname'>Enter a GitHub username: </label>
+          <input type='text' id='uname' name='uname' />
+        </div>
+        <div class='search-btn'>
+          <button id='uname-btn' name='uname-btn'>Search</button>
+        </div>
+      </div>
       <div id='issues' class='issues'>
         <!-- placeholder -->
       </div>
-      <!-- obtain GitHub username -->
-      <div class='user'>
-        <label for='uname'>Enter a GitHub username: </label>
-        <input type='text' id='uname' name='uname' />
-      </div>
-      <div class='search-btn'>
-        <button id='uname-btn' name='uname-btn'>Search</button>
-      </div>
-      <div class='gap1'></div>
       <div id='table' class='table'>
         <!--  placeholder -->
       </div>
-      <div class='repos' id='repos'>
-        <!--  placeholder -->
+      <div class='wrapper'>
+        <div class='num-repos' id='num-repos'>
+          <!--  placeholder -->
+        </div>
+        <div class='refresh-btn' id='refresh-btn'>
+          <!--  placeholder -->
+        </div>
       </div>
-      <div class='refresh-btn' id='refresh-btn'>
-        <!--  placeholder -->
-      </div>
-      <div class='gap2'></div>
       <div class='branch-table' id='branch-table'>
         <!-- placeholder -->
       </div>
