@@ -1,2 +1,3 @@
-# 421
-SER 421 Coursework
+# Web App Examples
+
+Copyright ASU 2021, All Rights Reserved.
