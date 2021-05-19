@@ -1,5 +1,4 @@
 # React Application
-Copyright ASU 2021, All Rights Reserved
 
 ## Description
 
