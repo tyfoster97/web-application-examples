@@ -3,7 +3,7 @@ const User = require("./user.model");
 /**
  * @author Ty Foster
  * @version 2021.04.05
- * SER 421, Arizona State University
+ * 
  * Copyright 2021, all rights reserved.
  * 
  */

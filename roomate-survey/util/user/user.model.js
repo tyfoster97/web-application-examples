@@ -2,7 +2,7 @@ const { model, Schema, SchemaTypes } = require("mongoose");
 /**
  * @author Ty Foster
  * @version 2021.04.05
- * SER 421, Arizona State University
+ * 
  * Copyright 2021, all rights reserved.
  * 
  * Contains the model definition for a user in the database

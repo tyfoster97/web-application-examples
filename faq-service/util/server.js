@@ -8,7 +8,7 @@ const { getQ } = require('./search');
 /**
  * @author Ty Foster
  * @version 2021.03.28
- * SER 421, Arizona State University
+ * 
  * Copyright 2021, all rights reserved.
  * 
  * Contains utility functions for the FAQ Service Server

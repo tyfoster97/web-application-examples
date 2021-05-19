@@ -7,7 +7,7 @@ const store = path.join(__dirname, '../data/activity.json');
 /**
  * @author Ty Foster
  * @version 2021.04.01
- * SER 421, Arizona State University
+ * 
  * Copyright 2021, all rights reserved.
  * 
  * Contains functions for interacting with the activity data store

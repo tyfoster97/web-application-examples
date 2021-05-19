@@ -1,1 +1,0 @@
-This code base implements a util file which contains methods common to each class to reduce repeated code.

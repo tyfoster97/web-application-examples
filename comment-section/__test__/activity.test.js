@@ -3,7 +3,7 @@ const { clearComments } = require('../util/comment');
 /**
  * @author Ty Foster
  * @version 2021.04.01
- * SER 421, Arizona State University
+ * 
  * Copyright 2021, all rights reserved.
  * 
  * Unit tests for comment.js

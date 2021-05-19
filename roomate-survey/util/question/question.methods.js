@@ -3,7 +3,7 @@ const { isVar } = require('../util/util');
 /**
  * @author Ty Foster
  * @version 2021.04.05
- * SER 421, Arizona State University
+ * 
  * Copyright 2021, all rights reserved.
  * 
  * Contains utility methods for the Question collection in the database
