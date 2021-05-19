@@ -48,7 +48,7 @@ function history() {
 function list() {
   const div = document.getElementById(rev_id);
   const p = document.createElement('p');
-  const actual = JSON.parse(sessionStorage.getItem('actual') || '[]');
+  const actual = JSON.parse(sessionStorage.getItem('uncensored') || '[]');
   const censored = JSON.parse(sessionStorage.getItem('comments') || '[]');
   for (let i = 0; i < actual.length; i++) {
     let p_text = document.createTextNode(`${i+1}.`);

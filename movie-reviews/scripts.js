@@ -6,8 +6,8 @@ const res_id = 'response';
 const rev_id = 'reviews';
 const ta_id = 'user_comment';
 /**
- * @file activity3.js
- * @version 2021.04.10
+ * @file scripts.js
+ * @version 2021.05.18
  * @author Ty Foster
  * 
  * Contains functions for manipulating content on the single page application
@@ -34,67 +34,68 @@ function setup() {
 function submitComment() {
   const ta = document.getElementById(ta_id);
   let comment = ta.value;
-  if (comment.includes('{') || comment.includes('}')) {
-    // handle JSON Object
-    try {
-      const obj = JSON.parse(text);
-      if (Dictionary.addData(obj)) {
-        alert('Word added to the dictionary and the dictionary is smarter');
-      } else {
-        alert('Could not find the proper key and the dictionary stays dumb');
-      }
-    } catch (err) {
-      alert('Invalid JSON! Please enter a valid JSON!');
-    }
-  } else {
-    const arr = comment.split(/\s+/);
-    if (arr[0].startsWith('/')) {
-      _welcomeMsg(localStorage.getItem('uname')); // redraw review section
-      // handle command
-      switch(arr[0]) {
-        case '/clear':
-          clear();
-          break;
-        case '/count':
-          count();
-          break;
-        case '/history':
-          history();
-          break;
-        case '/list':
-          list();
-          break;
-        case '/search':
-          if (arr[1]) {
-            search(arr[1]);
-          } else {
-            alert('Please enter a word to search');
-          }
-          break;
-        default: 
-          alert('The command you entered is not valid, valid commands are:\n /search <word>, /clear, /history, /count, and /list');
-          break;
+  if (comment.trim() !== '') { // content was provided
+    if (comment.includes('{') || comment.includes('}')) {
+      // handle JSON Object
+      try {
+        const obj = JSON.parse(text);
+        if (Dictionary.addData(obj)) {
+          alert('Word added to the dictionary and the dictionary is smarter');
+        } else {
+          alert('Could not find the proper key and the dictionary stays dumb');
+        }
+      } catch (err) {
+        alert('Invalid JSON! Please enter a valid JSON!');
       }
     } else {
-      // handle review
-      Dictionary.censor(arr);
-      const censored_comment = arr.join(' ');
-      // save uncensored reviews to session
-      const actual = JSON.parse(sessionStorage.getItem('actual') || '[]');
-      actual.push(comment);
-      sessionStorage.setItem('actual', JSON.stringify(actual));
-      // save censored to session and local
-      const session_comments = JSON.parse(sessionStorage.getItem('comments') || '[]');
-      session_comments.push(censored_comment);
-      sessionStorage.setItem('comments', JSON.stringify(session_comments));
-      const local_comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      local_comments.push(`${censored_comment} - ${localStorage.getItem('uname')}`);
-      localStorage.setItem('comments', JSON.stringify(local_comments));
-      // re-render reviews section
-      _welcomeMsg(localStorage.getItem('uname'));
-      document.getElementById(ta_id).value = censored_comment;
+      // handle comment or command
+      const arr = comment.split(/\s+/);
+      if (arr[0].startsWith('/')) { // could be a command
+        _welcomeMsg(localStorage.getItem('uname')); // redraw review section
+        // handle command
+        switch (arr[0]) {
+          case '/clear':
+            clear();
+            break;
+          case '/count':
+            count();
+            break;
+          case '/history':
+            history();
+            break;
+          case '/list':
+            list();
+            break;
+          case '/search':
+            if (arr[1]) {
+              search(arr[1]);
+            } else {
+              alert('Please enter a word to search');
+            }
+            break;
+          default:
+            alert('The command you entered is not valid, valid commands are:\n /search <word>, /clear, /history, /count, and /list');
+            break;
+        }
+      } else { // is a comment
+        Dictionary.censor(arr);
+        const censored_comment = arr.join(' ');
+        // save uncensored reviews and censored reviews
+        _saveToStorageArray('uncensored', comment, true);
+        _saveToStorageArray('comments', censored_comment, true);
+        _saveToStorageArray(
+          'comments',
+          `${censored_comment} - ${localStorage.getItem('uname')}`,
+          false
+        );
+        // re-render reviews section
+        _welcomeMsg(localStorage.getItem('uname'));
+        document.getElementById(ta_id).value = censored_comment;
+      }
     }
   }
+
+
 }
 
 /**
@@ -102,8 +103,10 @@ function submitComment() {
  */
 function submitName() {
   const uname = document.getElementById('u_name').value; // get
-  localStorage.setItem('uname', uname); // store
-  _welcomeMsg(uname); // display welcome message
+  if (uname !== '') {
+    localStorage.setItem('uname', uname); // store
+    _welcomeMsg(uname); // display welcome message
+  }
 }
 
 /**
@@ -199,6 +202,24 @@ function _reviewSection(div) {
   div.appendChild(h3);
   div.appendChild(p);
   div.appendChild(form);
+}
+
+/**
+ * Stores item to key in session or local storage
+ * 
+ * @param {string} key the array key
+ * @param {Object} item the item to add to the array
+ * @param {boolean} isSession if the array is in session storage
+ */
+function _saveToStorageArray(key, item, isSession) {
+  const obj = (isSession) ? sessionStorage.getItem(key) : localStorage.getItem(key);
+  const arr = JSON.parse(obj || '[]');
+  arr.push(item);
+  if (isSession) {
+    sessionStorage.setItem(key, JSON.stringify(arr));
+  } else {
+    localStorage.setItem(key, JSON.stringify(arr));
+  }
 }
 
 /**

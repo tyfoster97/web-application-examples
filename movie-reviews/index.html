@@ -3,19 +3,20 @@
 
 <head>
   <meta charset="utf-8"/>
-  <title>Activity 2</title>
+  <title>Activity 3</title>
   <script type="text/javascript" src='utils/entry.js'></script>
   <script type="text/javascript" src='utils/dictionary.js'></script>
   <script type="text/javascript" src="utils/timer.js"></script>
-  <script type="text/javascript" src='activity2.js'></script>
+  <script type="text/javascript" src="utils/commands.js"></script>
+  <script type="text/javascript" src='scripts.js'></script>
 </head>
 
 <body onload='setup()'>
   <form action='#'>
     <label for='u_name'>Enter your name: </label>
-    <input type='text' name='u_name' id='u_name' value=''/>
+    <input type='text' name='u_name' id='u_name' value='' required='required'/>
   </br>
-    <input id='btn_uname' type='button' value='Submit' required='required'/> <!--save username & display reviews-->
+    <input id='btn_uname' type='button' value='Submit'/> <!--save username & display reviews-->
   </form>
 </body>
 
